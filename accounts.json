@@ -1,0 +1,29 @@
+{
+  "admins": [
+    {"email": "admin@educore.com", "name": "Dr. Vikram Patel", "password": "admin123"}
+  ],
+  "teachers": [
+    {"email": "teacher1@school.edu", "name": "Mr. Rajesh Gupta", "password": "teacher123"},
+    {"email": "arun.k@school.edu", "name": "Dr. Arun Kumar", "password": "teacher123"},
+    {"email": "rohini.m@school.edu", "name": "Ms. Rohini Menon", "password": "teacher123"},
+    {"email": "devendra.s@school.edu", "name": "Mr. Devendra Saha", "password": "teacher123"},
+    {"email": "jyoti.i@school.edu", "name": "Mrs. Jyoti Iyer", "password": "teacher123"},
+    {"email": "bhupesh.j@school.edu", "name": "Mr. Bhupesh Jain", "password": "teacher123"},
+    {"email": "oindrila.b@school.edu", "name": "Ms. Oindrila Bhat", "password": "teacher123"},
+    {"email": "teacher2@school.edu", "name": "Mr. Sanjay Tripathi", "password": "teacher123"},
+    {"email": "teacher3@school.edu", "name": "Ms. Meera Nair", "password": "teacher123"},
+    {"email": "teacher4@school.edu", "name": "Mr. Vikram Reddy", "password": "teacher123"}
+  ],
+  "students": [
+    {"email": "aarav.s@school.edu", "name": "Aarav Sharma", "password": "student123"},
+    {"email": "ananya.g@school.edu", "name": "Ananya Gupta", "password": "student123"},
+    {"email": "arjun.k@school.edu", "name": "Arjun Kumar", "password": "student123"},
+    {"email": "anaya.p@school.edu", "name": "Anaya Patel", "password": "student123"},
+    {"email": "nikhil.s@school.edu", "name": "Nikhil Singh", "password": "student123"},
+    {"email": "priya.d@school.edu", "name": "Priya Desai", "password": "student123"},
+    {"email": "jagrit.v@school.edu", "name": "Jagrit Verma", "password": "student123"},
+    {"email": "aisha.r@school.edu", "name": "Aisha Reddy", "password": "student123"},
+    {"email": "farhan.k@school.edu", "name": "Farhan Khan", "password": "student123"},
+    {"email": "zara.m@school.edu", "name": "Zara Malhotra", "password": "student123"}
+  ]
+}

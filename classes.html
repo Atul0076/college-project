@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>EduCore Pro — Classes</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<script>tailwind.config={theme:{extend:{fontFamily:{display:['Fraunces','serif'],body:['DM Sans','sans-serif']},colors:{navy:{900:'#0a0f1e',800:'#0d1529',700:'#111d3a'},teal:{400:'#2dd4bf',500:'#14b8a6',600:'#0d9488'},amber:{400:'#fbbf24',500:'#f59e0b'},coral:{400:'#fb7185',500:'#f43f5e'},violet:{400:'#a78bfa',500:'#8b5cf6'}}}}}</script>
+<script src="shared.js"></script>
+<style>
+*{font-family:'DM Sans',sans-serif}.display{font-family:'Fraunces',serif}
+body{background:#0a0f1e;color:#fff}
+.card{background:rgba(13,21,41,.9);border:1px solid rgba(255,255,255,.07);backdrop-filter:blur(12px);border-radius:1rem}
+.input-field{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);color:#fff;transition:all .3s;border-radius:.75rem;padding:.625rem 1rem;font-size:.875rem;width:100%}
+.input-field:focus{outline:none;border-color:rgba(45,212,191,.6);box-shadow:0 0 0 3px rgba(45,212,191,.1)}
+.select-field{background:rgba(13,21,41,.95);border:1px solid rgba(255,255,255,.1);color:#fff;border-radius:.75rem;padding:.625rem 1rem;font-size:.875rem;width:100%}
+.modal-bg{background:rgba(0,0,0,.7);backdrop-filter:blur(4px)}
+.btn-primary{background:linear-gradient(135deg,#14b8a6,#0d9488);transition:all .3s}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(20,184,166,.35)}
+.grid-bg{position:fixed;inset:0;background-image:linear-gradient(rgba(45,212,191,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(45,212,191,.03) 1px,transparent 1px);background-size:48px 48px;pointer-events:none}
+.class-card{transition:all .25s}
+.class-card:hover{transform:translateY(-3px);border-color:rgba(255,255,255,.15)}
+</style>
+</head>
+<body class="min-h-screen">
+<div class="grid-bg"></div>
+<div id="sidebarMount"></div>
+<div class="lg:ml-64 flex flex-col min-h-screen">
+  <div id="topbarMount"></div>
+  <main class="flex-1 p-4 lg:p-6 space-y-5">
+
+    <div class="flex flex-col sm:flex-row sm:items-center gap-3 justify-between">
+      <div>
+        <h2 class="display text-2xl font-black text-white">Class Management</h2>
+        <p class="text-slate-500 text-sm" id="classCount">—</p>
+      </div>
+      <button onclick="openModal()" class="btn-primary px-5 py-2.5 rounded-xl text-white text-sm font-semibold flex items-center gap-2 w-fit">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+        Create Class
+      </button>
+    </div>
+
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
+      <div class="card p-4"><div class="text-slate-500 text-xs mb-1">Total Classes</div><div class="display text-2xl font-black text-white" id="totalC">—</div></div>
+      <div class="card p-4"><div class="text-slate-500 text-xs mb-1">Active</div><div class="display text-2xl font-black text-teal-400" id="activeC">—</div></div>
+      <div class="card p-4"><div class="text-slate-500 text-xs mb-1">Total Students</div><div class="display text-2xl font-black text-amber-400" id="studC">—</div></div>
+      <div class="card p-4"><div class="text-slate-500 text-xs mb-1">Avg Capacity</div><div class="display text-2xl font-black text-violet-400" id="capC">—</div></div>
+    </div>
+
+    <!-- Search bar -->
+    <div class="card p-4">
+      <div class="flex flex-col md:flex-row gap-3">
+        <div class="flex-1 flex items-center gap-2 bg-white/5 border border-white/10 rounded-xl px-3 py-2">
+          <svg class="w-4 h-4 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+          <input type="text" id="searchInput" placeholder="Search classes..." class="bg-transparent text-slate-300 text-sm outline-none w-full placeholder-slate-600" oninput="render()"/>
+        </div>
+        <select id="statusFilter" class="select-field md:w-36" onchange="render()">
+          <option value="">All Status</option><option>Active</option><option>Paused</option>
+        </select>
+      </div>
+    </div>
+
+    <div id="classGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+  </main>
+</div>
+
+<!-- Modal -->
+<div id="classModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
+  <div class="modal-bg absolute inset-0" onclick="closeModal()"></div>
+  <div class="relative w-full max-w-lg bg-navy-800 border border-white/10 rounded-2xl shadow-2xl overflow-y-auto max-h-[90vh]">
+    <div class="p-6 border-b border-white/5 flex items-center justify-between">
+      <h3 class="display text-xl font-black text-white" id="modalTitle">Create Class</h3>
+      <button onclick="closeModal()" class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-slate-400 hover:text-white"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+    </div>
+    <form id="classForm" class="p-6 space-y-4">
+      <input type="hidden" id="cid"/>
+      <div class="grid grid-cols-2 gap-4">
+        <div class="col-span-2"><label class="block text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1.5">Class Name *</label><input type="text" id="c_name" class="input-field" placeholder="Advanced Mathematics" required/></div>
+        <div><label class="block text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1.5">Class Code</label><input type="text" id="c_code" class="input-field" placeholder="MATH-401"/></div>
+        <div><label class="block text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1.5">Grade</label><input type="text" id="c_grade" class="input-field" placeholder="12-A"/></div>
+        <div><label class="block text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1.5">Teacher</label>
+          <select id="c_teacher" class="select-field" required></select>
+        </div>
+        <div><label class="block text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1.5">Room</label><input type="text" id="c_room" class="input-field" placeholder="B-201"/></div>
+        <div><label class="block text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1.5">Schedule</label><input type="text" id="c_time" class="input-field" placeholder="Mon/Wed 8:00–9:30"/></div>
+        <div><label class="block text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1.5">Capacity</label><input type="number" id="c_capacity" class="input-field" placeholder="30" min="1"/></div>
+        <div><label class="block text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1.5">Status</label>
+          <select id="c_status" class="select-field"><option>Active</option><option>Paused</option></select>
+        </div>
+      </div>
+      <div class="flex gap-3 pt-2">
+        <button type="button" onclick="closeModal()" class="flex-1 py-2.5 rounded-xl border border-white/10 text-slate-400 text-sm hover:text-white transition-all">Cancel</button>
+        <button type="submit" class="flex-1 btn-primary py-2.5 rounded-xl text-white text-sm font-semibold">Save Class</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+document.getElementById('sidebarMount').innerHTML=renderSidebar('classes');
+document.getElementById('topbarMount').innerHTML=renderTopbar('Classes','Manage all courses and timetables');
+
+let classes=getClasses();
+let editId=null;
+const subjectColors={
+  'Mathematics':'bg-teal-500/15 border-teal-500/20 text-teal-400',
+  'Physics Fundamentals':'bg-amber-400/15 border-amber-400/20 text-amber-400',
+  'World Literature':'bg-violet-400/15 border-violet-400/20 text-violet-400',
+  'Modern History':'bg-coral-400/15 border-coral-400/20 text-coral-400',
+  'Web Development':'bg-teal-400/15 border-teal-400/20 text-teal-400',
+};
+const icons={
+  'Mathematics':'M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z',
+  'default':'M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253',
+};
+
+function populate(){
+  const ts=getTeachers();
+  const sel=document.getElementById('c_teacher');
+  sel.innerHTML=ts.map(t=>`<option value="${t.name}">${t.name}</option>`).join('');
+}
+
+function updateStats(){
+  document.getElementById('totalC').textContent=classes.length;
+  document.getElementById('activeC').textContent=classes.filter(c=>c.status==='Active').length;
+  document.getElementById('studC').textContent=classes.reduce((a,c)=>a+c.students,0);
+  const avg=Math.round(classes.reduce((a,c)=>a+(c.students/c.capacity*100),0)/classes.length);
+  document.getElementById('capC').textContent=avg+'%';
+  document.getElementById('classCount').textContent=`${classes.length} classes scheduled`;
+}
+
+function render(){
+  const q=document.getElementById('searchInput').value.toLowerCase();
+  const st=document.getElementById('statusFilter').value;
+  const list=classes.filter(c=>{
+    const mq=!q||c.name.toLowerCase().includes(q)||c.teacher.toLowerCase().includes(q)||c.code.toLowerCase().includes(q);
+    const ms=!st||c.status===st;
+    return mq&&ms;
+  });
+  const pct=c=>Math.round(c.students/c.capacity*100);
+  const grid=document.getElementById('classGrid');
+  grid.innerHTML=list.map(c=>`
+  <div class="class-card card p-5">
+    <div class="flex items-start justify-between mb-4">
+      <div>
+        <span class="text-slate-500 text-xs font-mono">${c.code}</span>
+        <h3 class="text-white font-semibold mt-0.5">${c.name}</h3>
+        <p class="text-slate-400 text-xs">${c.teacher}</p>
+      </div>
+      <span class="px-2.5 py-1 rounded-full text-xs font-medium ${c.status==='Active'?'bg-teal-500/15 text-teal-400 border border-teal-500/20':'bg-amber-400/15 text-amber-400 border border-amber-400/20'}">${c.status}</span>
+    </div>
+    <div class="space-y-2.5 mb-4">
+      <div class="flex items-center gap-2 text-xs text-slate-400">
+        <svg class="w-3.5 h-3.5 text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/></svg>
+        Room ${c.room} · Grade ${c.grade}
+      </div>
+      <div class="flex items-center gap-2 text-xs text-slate-400">
+        <svg class="w-3.5 h-3.5 text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        ${c.time}
+      </div>
+    </div>
+    <div class="mb-3">
+      <div class="flex justify-between text-xs mb-1"><span class="text-slate-500">Enrollment</span><span class="text-white font-medium">${c.students}/${c.capacity}</span></div>
+      <div class="h-1.5 bg-navy-700 rounded-full overflow-hidden"><div class="h-full rounded-full ${pct(c)>=90?'bg-coral-400':pct(c)>=70?'bg-amber-400':'bg-teal-500'}" style="width:${pct(c)}%"></div></div>
+    </div>
+    <div class="flex gap-2">
+      <button onclick="editClass(${c.id})" class="flex-1 py-1.5 rounded-lg border border-amber-400/20 text-amber-400 text-xs hover:bg-amber-400/10 transition-all">Edit</button>
+      <button onclick="removeClass(${c.id})" class="flex-1 py-1.5 rounded-lg border border-coral-400/20 text-coral-400 text-xs hover:bg-coral-400/10 transition-all">Remove</button>
+    </div>
+  </div>`).join('');
+  if(!list.length)grid.innerHTML='<div class="col-span-full py-16 text-center text-slate-500">No classes found</div>';
+}
+
+function openModal(){
+  editId=null;populate();
+  document.getElementById('modalTitle').textContent='Create Class';
+  document.getElementById('classForm').reset();
+  document.getElementById('cid').value='';
+  document.getElementById('classModal').classList.remove('hidden');
+}
+function editClass(id){
+  editId=id;populate();
+  const c=classes.find(x=>x.id===id);
+  document.getElementById('modalTitle').textContent='Edit Class';
+  document.getElementById('cid').value=c.id;
+  document.getElementById('c_name').value=c.name;
+  document.getElementById('c_code').value=c.code;
+  document.getElementById('c_grade').value=c.grade;
+  document.getElementById('c_teacher').value=c.teacher;
+  document.getElementById('c_room').value=c.room;
+  document.getElementById('c_time').value=c.time;
+  document.getElementById('c_capacity').value=c.capacity;
+  document.getElementById('c_status').value=c.status;
+  document.getElementById('classModal').classList.remove('hidden');
+}
+function closeModal(){document.getElementById('classModal').classList.add('hidden');}
+function removeClass(id){
+  if(!confirm('Remove this class?'))return;
+  classes=classes.filter(c=>c.id!==id);
+  localStorage.setItem('edu_classes',JSON.stringify(classes));
+  updateStats();render();
+}
+document.getElementById('classForm').addEventListener('submit',function(e){
+  e.preventDefault();
+  const d={
+    name:document.getElementById('c_name').value.trim(),
+    code:document.getElementById('c_code').value.trim(),
+    grade:document.getElementById('c_grade').value.trim(),
+    teacher:document.getElementById('c_teacher').value,
+    room:document.getElementById('c_room').value.trim(),
+    time:document.getElementById('c_time').value.trim(),
+    capacity:parseInt(document.getElementById('c_capacity').value)||30,
+    status:document.getElementById('c_status').value,
+  };
+  if(editId){const i=classes.findIndex(c=>c.id===editId);classes[i]={...classes[i],...d};}
+  else{d.id=Date.now();d.students=0;classes.unshift(d);}
+  localStorage.setItem('edu_classes',JSON.stringify(classes));
+  closeModal();updateStats();render();
+});
+updateStats();render();
+</script>
+</body>
+</html>

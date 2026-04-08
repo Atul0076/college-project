@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>EduCore Pro — Student Dashboard</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<script>
+tailwind.config={theme:{extend:{fontFamily:{display:['Fraunces','serif'],body:['DM Sans','sans-serif']},colors:{navy:{900:'#0a0f1e',800:'#0d1529',700:'#111d3a',600:'#162347',500:'#1e2f5a'},teal:{400:'#2dd4bf',500:'#14b8a6',600:'#0d9488'},amber:{400:'#fbbf24',500:'#f59e0b'},coral:{400:'#fb7185',500:'#f43f5e'},violet:{400:'#a78bfa',500:'#8b5cf6'}}}}}
+</script>
+<script src="shared.js"></script>
+<style>
+*{font-family:'DM Sans',sans-serif}.display{font-family:'Fraunces',serif}
+body{background:#0a0f1e;color:#fff}
+.card{background:rgba(13,21,41,0.8);border:1px solid rgba(255,255,255,0.07);backdrop-filter:blur(12px);border-radius:1rem}
+.stat-card{transition:all .3s}
+.stat-card:hover{transform:translateY(-3px);border-color:rgba(45,212,191,0.25)}
+.grid-bg{position:fixed;inset:0;background-image:linear-gradient(rgba(45,212,191,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(45,212,191,0.03) 1px,transparent 1px);background-size:48px 48px;pointer-events:none}
+.slide-in{animation:slideIn .5s ease forwards;opacity:0}
+@keyframes slideIn{to{opacity:1;transform:translateY(0)}from{opacity:0;transform:translateY(16px)}}
+.topbar{background:rgba(13,21,41,0.9);border-bottom:1px solid rgba(255,255,255,0.07);backdrop-filter:blur(12px)}
+.sidebar-link{transition:all .3s;border-left:2px solid transparent}
+.sidebar-link:hover{border-left-color:#14b8a6;background:rgba(20,184,166,0.1)}
+.sidebar-link.active{border-left-color:#14b8a6;background:rgba(20,184,166,0.15)}
+</style>
+</head>
+<body class="min-h-screen">
+<div class="grid-bg"></div>
+<div class="flex min-h-screen">
+
+<!-- Sidebar -->
+<aside class="hidden lg:flex w-64 bg-navy-900 border-r border-white/5 flex-col">
+  <div class="p-6 border-b border-white/5">
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-teal-400 to-teal-600 flex items-center justify-center shadow-lg shadow-teal-500/30">
+        <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+      </div>
+      <span class="display text-white text-xl font-bold">EduCore</span>
+    </div>
+  </div>
+  <nav class="flex-1 p-4 space-y-1">
+    <a href="student-dashboard.html" class="sidebar-link active flex items-center gap-3 px-4 py-3 rounded-lg text-teal-400 text-sm font-medium">
+      <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+      Dashboard
+    </a>
+    <a href="student-classes.html" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-lg text-slate-400 hover:text-white text-sm font-medium">
+      <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+      My Classes
+    </a>
+    <a href="student-grades.html" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-lg text-slate-400 hover:text-white text-sm font-medium">
+      <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+      Grades
+    </a>
+    <a href="student-attendance.html" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-lg text-slate-400 hover:text-white text-sm font-medium">
+      <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+      Attendance
+    </a>
+    <a href="student-notifications.html" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-lg text-slate-400 hover:text-white text-sm font-medium">
+      <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+      Notifications
+    </a>
+  </nav>
+  <div class="p-4 border-t border-white/5">
+    <button onclick="logout()" class="w-full py-2 rounded-lg bg-coral-500 hover:bg-coral-400 text-white text-sm font-semibold transition-all">
+      Logout
+    </button>
+  </div>
+</aside>
+
+<!-- Main Content -->
+<div class="flex-1 flex flex-col min-h-screen">
+
+<!-- Topbar -->
+<div class="topbar px-4 lg:px-6 py-4 flex items-center justify-between">
+  <h1 class="display text-2xl font-bold text-white">Student Portal</h1>
+  <div id="userProfile" class="flex items-center gap-4">
+    <div class="text-right">
+      <p id="userName" class="text-white font-semibold text-sm"></p>
+      <p class="text-slate-400 text-xs">Student</p>
+    </div>
+    <div id="userAvatar" class="w-10 h-10 rounded-full bg-gradient-to-br from-teal-400 to-teal-600 flex items-center justify-center text-white font-semibold"></div>
+  </div>
+</div>
+
+<!-- Main Content Area -->
+<main class="flex-1 p-4 lg:p-6 space-y-6 overflow-auto">
+
+  <!-- Welcome Banner -->
+  <div id="s1" class="slide-in card relative overflow-hidden p-6">
+    <div class="absolute inset-0 bg-gradient-to-r from-teal-500/10 to-transparent pointer-events-none"></div>
+    <div class="relative">
+      <p class="text-slate-400 text-sm mb-1">Welcome back, <span class="text-teal-400" id="studentName"></span> 👋</p>
+      <h2 class="display text-2xl font-black text-white mb-2">Your Academic Dashboard</h2>
+      <p class="text-slate-400 text-sm">Grade: <span id="studentGrade" class="text-teal-400 font-semibold"></span> | GPA: <span id="studentGPA" class="text-amber-400 font-semibold"></span></p>
+    </div>
+  </div>
+
+  <!-- Stats Cards -->
+  <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+    <!-- Attendance -->
+    <div class="slide-in stat-card card p-5" style="animation-delay:.1s">
+      <div class="flex items-start justify-between mb-4">
+        <div class="w-10 h-10 rounded-xl bg-teal-500/15 flex items-center justify-center">
+          <svg class="w-5 h-5 text-teal-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+        </div>
+        <span class="text-xs text-teal-400 bg-teal-500/15 px-2 py-0.5 rounded-full" id="attendancePercentage">0%</span>
+      </div>
+      <div class="display text-3xl font-black text-white mb-1" id="attendanceValue">0%</div>
+      <div class="text-slate-500 text-xs">Attendance Rate</div>
+    </div>
+
+    <!-- Classes -->
+    <div class="slide-in stat-card card p-5" style="animation-delay:.15s">
+      <div class="flex items-start justify-between mb-4">
+        <div class="w-10 h-10 rounded-xl bg-amber-400/15 flex items-center justify-center">
+          <svg class="w-5 h-5 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+        </div>
+      </div>
+      <div class="display text-3xl font-black text-white mb-1" id="classesCount">0</div>
+      <div class="text-slate-500 text-xs">Active Classes</div>
+    </div>
+
+    <!-- GPA -->
+    <div class="slide-in stat-card card p-5" style="animation-delay:.2s">
+      <div class="flex items-start justify-between mb-4">
+        <div class="w-10 h-10 rounded-xl bg-violet-400/15 flex items-center justify-center">
+          <svg class="w-5 h-5 text-violet-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+        </div>
+        <span class="text-xs text-violet-400 bg-violet-400/15 px-2 py-0.5 rounded-full">Good</span>
+      </div>
+      <div class="display text-3xl font-black text-white mb-1" id="gpaValue">0.0</div>
+      <div class="text-slate-500 text-xs">Current GPA</div>
+    </div>
+
+    <!-- Next Class -->
+    <div class="slide-in stat-card card p-5" style="animation-delay:.25s">
+      <div class="flex items-start justify-between mb-4">
+        <div class="w-10 h-10 rounded-xl bg-coral-400/15 flex items-center justify-center">
+          <svg class="w-5 h-5 text-coral-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 2m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        </div>
+      </div>
+      <div class="display text-sm font-black text-white mb-1" id="nextClass">No classes</div>
+      <div class="text-slate-500 text-xs" id="nextClassTime">Today</div>
+    </div>
+  </div>
+
+  <!-- Enrolled Classes -->
+  <div class="slide-in card p-6" style="animation-delay:.3s">
+    <div class="flex items-center justify-between mb-6">
+      <h3 class="display text-xl font-bold text-white">Your Classes</h3>
+      <a href="#" class="text-teal-400 text-sm hover:text-teal-300">View all →</a>
+    </div>
+    <div id="enrolledClasses" class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+      <!-- Classes will be populated here -->
+    </div>
+  </div>
+
+  <!-- Recent Grades -->
+  <div class="slide-in card p-6" style="animation-delay:.35s">
+    <div class="flex items-center justify-between mb-6">
+      <h3 class="display text-xl font-bold text-white">Recent Grades</h3>
+      <span class="text-slate-400 text-sm">Last 5 assignments</span>
+    </div>
+    <div id="gradesTable" class="space-y-3">
+      <!-- Grades will be populated here -->
+    </div>
+  </div>
+
+</main>
+
+</div>
+
+</div>
+
+<script>
+// Load student data
+const user = authGuard('Student');
+const students = getStudents();
+const classes = getClasses();
+const student = students.find(s => s.id === user.id);
+
+// Populate header
+document.getElementById('userName').textContent = user.name;
+document.getElementById('userAvatar').textContent = user.avatar;
+
+// Populate dashboard
+document.getElementById('studentName').textContent = user.name;
+document.getElementById('studentGrade').textContent = student.grade;
+document.getElementById('studentGPA').textContent = student.gpa;
+document.getElementById('attendanceValue').textContent = student.attendance + '%';
+document.getElementById('attendancePercentage').textContent = student.attendance + '%';
+document.getElementById('gpaValue').textContent = student.gpa.toFixed(1);
+document.getElementById('classesCount').textContent = classes.length;
+
+// Get student's classes
+const studentClasses = classes.slice(0, 4);
+
+// Populate enrolled classes
+const enrolledClassesHTML = studentClasses.map(cls => `
+  <div class="bg-navy-800/50 rounded-lg p-4 border border-white/10 hover:border-teal-500/30 transition-all cursor-pointer">
+    <div class="flex items-start justify-between mb-3">
+      <div>
+        <h4 class="text-white font-semibold text-sm">${cls.name}</h4>
+        <p class="text-slate-400 text-xs">${cls.teacher}</p>
+      </div>
+      <span class="text-teal-400 text-xs bg-teal-500/15 px-2 py-1 rounded">Active</span>
+    </div>
+    <div class="flex items-center justify-between text-xs text-slate-400">
+      <span>${cls.room}</span>
+      <span>${cls.time}</span>
+    </div>
+  </div>
+`).join('');
+document.getElementById('enrolledClasses').innerHTML = enrolledClassesHTML;
+
+// Populate next class
+if (studentClasses.length > 0) {
+  document.getElementById('nextClass').textContent = studentClasses[0].name;
+  document.getElementById('nextClassTime').textContent = studentClasses[0].time;
+}
+
+// Populate grades table
+const gradesItems = [
+  {subject: 'Mathematics', exam: 'Unit 3 Test', grade: 'A', score: '92/100'},
+  {subject: 'Physics', exam: 'Lab Report', grade: 'A-', score: '88/100'},
+  {subject: 'Literature', exam: 'Essay', grade: 'A+', score: '95/100'},
+  {subject: 'History', exam: 'Project', grade: 'A', score: '90/100'},
+  {subject: 'Computer Science', exam: 'Assignment', grade: 'A-', score: '87/100'},
+];
+
+const gradesHTML = gradesItems.map(item => `
+  <div class="flex items-center justify-between p-3 bg-navy-800/50 rounded-lg border border-white/10">
+    <div>
+      <p class="text-white font-medium text-sm">${item.exam}</p>
+      <p class="text-slate-400 text-xs">${item.subject}</p>
+    </div>
+    <div class="text-right">
+      <p class="text-white font-semibold text-sm">${item.grade}</p>
+      <p class="text-slate-400 text-xs">${item.score}</p>
+    </div>
+  </div>
+`).join('');
+document.getElementById('gradesTable').innerHTML = gradesHTML;
+</script>
+
+</body>
+</html>

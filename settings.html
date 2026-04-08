@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>EduCore Pro — Settings</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<script>tailwind.config={theme:{extend:{fontFamily:{display:['Fraunces','serif'],body:['DM Sans','sans-serif']},colors:{navy:{900:'#0a0f1e',800:'#0d1529',700:'#111d3a'},teal:{400:'#2dd4bf',500:'#14b8a6'},amber:{400:'#fbbf24'},coral:{400:'#fb7185',500:'#f43f5e'},violet:{400:'#a78bfa'}}}}}</script>
+<script src="shared.js"></script>
+<style>
+*{font-family:'DM Sans',sans-serif}.display{font-family:'Fraunces',serif}
+body{background:#0a0f1e;color:#fff}
+.card{background:rgba(13,21,41,.9);border:1px solid rgba(255,255,255,.07);backdrop-filter:blur(12px);border-radius:1rem}
+.input-field{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);color:#fff;transition:all .3s;border-radius:.75rem;padding:.625rem 1rem;font-size:.875rem;width:100%}
+.input-field:focus{outline:none;border-color:rgba(45,212,191,.6);box-shadow:0 0 0 3px rgba(45,212,191,.1)}
+.btn-primary{background:linear-gradient(135deg,#14b8a6,#0d9488);transition:all .3s}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(20,184,166,.35)}
+.grid-bg{position:fixed;inset:0;background-image:linear-gradient(rgba(45,212,191,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(45,212,191,.03) 1px,transparent 1px);background-size:48px 48px;pointer-events:none}
+.tab-btn{padding:.5rem 1.25rem;border-radius:.75rem;font-size:.875rem;font-weight:500;transition:all .2s}
+.tab-active{background:rgba(45,212,191,.15);color:#2dd4bf;border:1px solid rgba(45,212,191,.2)}
+.tab-inactive{color:#64748b;border:1px solid transparent}
+.tab-inactive:hover{color:#fff}
+.toggle{width:44px;height:24px;background:#1e2f5a;border-radius:12px;position:relative;cursor:pointer;transition:background .2s}
+.toggle.on{background:#14b8a6}
+.toggle::after{content:'';position:absolute;width:18px;height:18px;background:#fff;border-radius:50%;top:3px;left:3px;transition:left .2s}
+.toggle.on::after{left:23px}
+</style>
+</head>
+<body class="min-h-screen">
+<div class="grid-bg"></div>
+<div id="sidebarMount"></div>
+<div class="lg:ml-64 flex flex-col min-h-screen">
+  <div id="topbarMount"></div>
+  <main class="flex-1 p-4 lg:p-6 space-y-5">
+
+    <div>
+      <h2 class="display text-2xl font-black text-white">Settings</h2>
+      <p class="text-slate-500 text-sm">Manage your account and system preferences</p>
+    </div>
+
+    <!-- Tab nav -->
+    <div class="flex gap-2 flex-wrap">
+      <button onclick="switchTab('profile')" class="tab-btn tab-active" id="tab_profile">Profile</button>
+      <button onclick="switchTab('school')" class="tab-btn tab-inactive" id="tab_school">School Info</button>
+      <button onclick="switchTab('notifications')" class="tab-btn tab-inactive" id="tab_notifications">Notifications</button>
+      <button onclick="switchTab('security')" class="tab-btn tab-inactive" id="tab_security">Security</button>
+      <button onclick="switchTab('system')" class="tab-btn tab-inactive" id="tab_system">System</button>
+    </div>
+
+    <!-- Profile Tab -->
+    <div id="tab_content_profile" class="space-y-5">
+      <div class="card p-6">
+        <h3 class="text-white font-semibold mb-4">Admin Profile</h3>
+        <div class="flex items-center gap-5 mb-6 pb-6 border-b border-white/5">
+          <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-teal-400 to-teal-600 flex items-center justify-center text-white text-2xl font-bold" id="avatarPreview">SM</div>
+          <div>
+            <div class="text-white font-semibold text-lg" id="profileName">Dr. Sarah Mitchell</div>
+            <div class="text-slate-400 text-sm" id="profileRole">Super Admin</div>
+            <div class="text-slate-500 text-xs" id="profileEmail">admin@educore.com</div>
+          </div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div><label class="block text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1.5">First Name</label><input type="text" id="p_first" value="Sarah" class="input-field"/></div>
+          <div><label class="block text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1.5">Last Name</label><input type="text" id="p_last" value="Mitchell" class="input-field"/></div>
+          <div><label class="block text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1.5">Email</label><input type="email" id="p_email" value="admin@educore.com" class="input-field"/></div>
+          <div><label class="block text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1.5">Phone</label><input type="tel" id="p_phone" placeholder="+1-555-0000" class="input-field"/></div>
+          <div><label class="block text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1.5">Title</label><input type="text" id="p_title" value="Dr." class="input-field"/></div>
+          <div><label class="block text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1.5">Department</label><input type="text" id="p_dept" value="Administration" class="input-field"/></div>
+        </div>
+        <button onclick="saveProfile()" class="btn-primary mt-5 px-6 py-2.5 rounded-xl text-white text-sm font-semibold">Save Profile</button>
+      </div>
+    </div>
+
+    <!-- School Tab -->
+    <div id="tab_content_school" class="hidden space-y-5">
+      <div class="card p-6">
+        <h3 class="text-white font-semibold mb-4">School Information</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="md:col-span-2"><label class="block text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1.5">School Name</label><input type="text" value="EduCore Academy" class="input-field"/></div>
+          <div><label class="block text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1.5">Principal</label><input type="text" value="Dr. Sarah Mitchell" class="input-field"/></div>
+          <div><label class="block text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1.5">Phone</label><input type="tel" value="+1-555-EDU-CORE" class="input-field"/></div>
+          <div><label class="block text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1.5">Email</label><input type="email" value="info@educore.edu" class="input-field"/></div>
+          <div><label class="block text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1.5">Website</label><input type="url" value="https://educore.edu" class="input-field"/></div>
+          <div class="md:col-span-2"><label class="block text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1.5">Address</label><input type="text" value="123 Academy Drive, Boston, MA 02101" class="input-field"/></div>
+          <div><label class="block text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1.5">Academic Year</label><input type="text" value="2024–2025" class="input-field"/></div>
+          <div><label class="block text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1.5">Semester</label>
+            <select class="input-field" style="background:rgba(13,21,41,.95)"><option>Fall 2024</option><option>Spring 2025</option></select>
+          </div>
+        </div>
+        <button onclick="showToast('School info saved!')" class="btn-primary mt-5 px-6 py-2.5 rounded-xl text-white text-sm font-semibold">Save School Info</button>
+      </div>
+    </div>
+
+    <!-- Notifications Tab -->
+    <div id="tab_content_notifications" class="hidden">
+      <div class="card p-6">
+        <h3 class="text-white font-semibold mb-5">Notification Preferences</h3>
+        <div class="space-y-4">
+          ${[
+            {label:'Low Attendance Alerts', desc:'Notify when student attendance drops below threshold', on:true},
+            {label:'New Enrollment', desc:'Notify on new student registration', on:true},
+            {label:'Grade Reports', desc:'Receive grade report reminders', on:true},
+            {label:'Parent Messages', desc:'Alerts for parent communications', on:false},
+            {label:'Teacher Absences', desc:'Notify when teacher marks absence', on:true},
+            {label:'System Updates', desc:'Platform maintenance and updates', on:false},
+          ].map((n,i)=>`
+          <div class="flex items-center justify-between py-3 border-b border-white/5">
+            <div>
+              <div class="text-white text-sm font-medium">${n.label}</div>
+              <div class="text-slate-500 text-xs">${n.desc}</div>
+            </div>
+            <div class="toggle ${n.on?'on':''}" onclick="this.classList.toggle('on')"></div>
+          </div>`).join('')}
+        </div>
+        <button onclick="showToast('Notification settings saved!')" class="btn-primary mt-5 px-6 py-2.5 rounded-xl text-white text-sm font-semibold">Save Preferences</button>
+      </div>
+    </div>
+
+    <!-- Security Tab -->
+    <div id="tab_content_security" class="hidden">
+      <div class="card p-6">
+        <h3 class="text-white font-semibold mb-4">Change Password</h3>
+        <div class="space-y-4 max-w-md">
+          <div><label class="block text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1.5">Current Password</label><input type="password" class="input-field" placeholder="••••••••"/></div>
+          <div><label class="block text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1.5">New Password</label><input type="password" class="input-field" placeholder="••••••••"/></div>
+          <div><label class="block text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1.5">Confirm Password</label><input type="password" class="input-field" placeholder="••••••••"/></div>
+        </div>
+        <button onclick="showToast('Password updated successfully!')" class="btn-primary mt-5 px-6 py-2.5 rounded-xl text-white text-sm font-semibold">Update Password</button>
+      </div>
+      <div class="card p-6 mt-4">
+        <h3 class="text-white font-semibold mb-4">Security Settings</h3>
+        <div class="space-y-4">
+          ${[
+            {label:'Two-Factor Authentication', desc:'Add extra security to your account'},
+            {label:'Login Notifications', desc:'Get notified of new logins'},
+            {label:'Session Timeout', desc:'Auto-logout after 30 minutes'},
+          ].map(n=>`
+          <div class="flex items-center justify-between py-3 border-b border-white/5">
+            <div>
+              <div class="text-white text-sm font-medium">${n.label}</div>
+              <div class="text-slate-500 text-xs">${n.desc}</div>
+            </div>
+            <div class="toggle" onclick="this.classList.toggle('on')"></div>
+          </div>`).join('')}
+        </div>
+      </div>
+    </div>
+
+    <!-- System Tab -->
+    <div id="tab_content_system" class="hidden">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div class="card p-6">
+          <h3 class="text-white font-semibold mb-4">System Info</h3>
+          <div class="space-y-3">
+            ${[
+              ['Version','EduCore Pro v2.4.1'],
+              ['Database','localStorage (Demo)'],
+              ['Students',()=>getStudents().length+' enrolled'],
+              ['Teachers',()=>getTeachers().length+' faculty'],
+              ['Classes',()=>getClasses().length+' active'],
+            ].map(([k,v])=>`
+            <div class="flex justify-between py-2 border-b border-white/5">
+              <span class="text-slate-500 text-sm">${k}</span>
+              <span class="text-slate-200 text-sm font-medium">${typeof v==='function'?v():v}</span>
+            </div>`).join('')}
+          </div>
+        </div>
+        <div class="card p-6">
+          <h3 class="text-white font-semibold mb-4">Data Management</h3>
+          <div class="space-y-3">
+            <button onclick="exportData()" class="w-full py-2.5 rounded-xl border border-white/10 text-slate-300 text-sm hover:text-white hover:border-white/20 transition-all text-left px-4 flex items-center gap-3">
+              <svg class="w-4 h-4 text-teal-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+              Export All Data (JSON)
+            </button>
+            <button onclick="resetData()" class="w-full py-2.5 rounded-xl border border-coral-400/20 text-coral-400 text-sm hover:bg-coral-400/10 transition-all text-left px-4 flex items-center gap-3">
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+              Reset to Default Data
+            </button>
+            <button onclick="logout()" class="w-full py-2.5 rounded-xl border border-coral-500/30 bg-coral-500/10 text-coral-400 text-sm hover:bg-coral-500/20 transition-all text-left px-4 flex items-center gap-3">
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+              Logout
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+document.getElementById('sidebarMount').innerHTML=renderSidebar('settings');
+document.getElementById('topbarMount').innerHTML=renderTopbar('Settings','Manage preferences and system configuration');
+
+const user=JSON.parse(localStorage.getItem('edu_auth')||'{}');
+if(user.name){
+  document.getElementById('profileName').textContent=user.name;
+  document.getElementById('profileRole').textContent=user.role;
+  document.getElementById('profileEmail').textContent=user.email;
+  document.getElementById('avatarPreview').textContent=user.avatar||user.name.split(' ').map(w=>w[0]).join('').slice(0,2);
+}
+
+function switchTab(tab){
+  ['profile','school','notifications','security','system'].forEach(t=>{
+    document.getElementById('tab_content_'+t).classList.toggle('hidden',t!==tab);
+    document.getElementById('tab_'+t).className='tab-btn '+(t===tab?'tab-active':'tab-inactive');
+  });
+}
+
+function saveProfile(){
+  const first=document.getElementById('p_first').value;
+  const last=document.getElementById('p_last').value;
+  const email=document.getElementById('p_email').value;
+  const name=`Dr. ${first} ${last}`;
+  const auth=JSON.parse(localStorage.getItem('edu_auth')||'{}');
+  auth.name=name;auth.email=email;auth.avatar=(first[0]||'')+(last[0]||'');
+  localStorage.setItem('edu_auth',JSON.stringify(auth));
+  document.getElementById('profileName').textContent=name;
+  document.getElementById('profileEmail').textContent=email;
+  showToast('Profile saved!');
+}
+
+function exportData(){
+  const data={students:getStudents(),teachers:getTeachers(),classes:getClasses()};
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='educore_data.json';a.click();
+}
+
+function resetData(){
+  if(!confirm('Reset all data to defaults? This cannot be undone.'))return;
+  localStorage.removeItem('edu_students');localStorage.removeItem('edu_teachers');localStorage.removeItem('edu_classes');
+  showToast('Data reset to defaults!');
+}
+
+function showToast(msg,type='teal'){
+  const t=document.createElement('div');
+  t.className=`fixed bottom-6 right-6 z-50 px-5 py-3 rounded-xl text-white text-sm font-medium shadow-2xl ${type==='coral'?'bg-coral-600':'bg-teal-600'}`;
+  t.textContent=msg;document.body.appendChild(t);setTimeout(()=>t.remove(),3000);
+}
+</script>
+</body>
+</html>

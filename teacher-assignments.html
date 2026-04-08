@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Assignments — Teacher Portal</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<script>
+tailwind.config={theme:{extend:{fontFamily:{display:['Fraunces','serif'],body:['DM Sans','sans-serif']},colors:{navy:{900:'#0a0f1e',800:'#0d1529',700:'#111d3a',600:'#162347',500:'#1e2f5a'},teal:{400:'#2dd4bf',500:'#14b8a6',600:'#0d9488'},amber:{400:'#fbbf24',500:'#f59e0b'},coral:{400:'#fb7185',500:'#f43f5e'},violet:{400:'#a78bfa',500:'#8b5cf6'}}}}}
+</script>
+<script src="shared.js"></script>
+<style>
+*{font-family:'DM Sans',sans-serif}.display{font-family:'Fraunces',serif}
+body{background:#0a0f1e;color:#fff}
+.card{background:rgba(13,21,41,0.8);border:1px solid rgba(255,255,255,0.07);backdrop-filter:blur(12px);border-radius:1rem}
+.grid-bg{position:fixed;inset:0;background-image:linear-gradient(rgba(45,212,191,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(45,212,191,0.03) 1px,transparent 1px);background-size:48px 48px;pointer-events:none}
+.topbar{background:rgba(13,21,41,0.9);border-bottom:1px solid rgba(255,255,255,0.07);backdrop-filter:blur(12px)}
+.sidebar-link{transition:all .3s;border-left:2px solid transparent}
+.sidebar-link:hover{border-left-color:#f59e0b;background:rgba(251,191,36,0.1)}
+.sidebar-link.active{border-left-color:#f59e0b;background:rgba(251,191,36,0.15)}
+.assignment-card:hover{border-color:rgba(251,191,36,0.4);transform:translateY(-2px)}
+.progress-bar{height:0.5rem;border-radius:9999px;background:rgba(30,47,90,1)}
+.progress-bar-fill{height:100%;border-radius:9999px}
+</style>
+</head>
+<body class="min-h-screen">
+<div class="grid-bg"></div>
+<div class="flex min-h-screen">
+
+<!-- Sidebar -->
+<aside class="hidden lg:flex w-64 bg-navy-900 border-r border-white/5 flex-col">
+  <div class="p-6 border-b border-white/5">
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center shadow-lg shadow-amber-500/30">
+        <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+      </div>
+      <span class="display text-white text-xl font-bold">EduCore</span>
+    </div>
+  </div>
+  <nav class="flex-1 p-4 space-y-1">
+    <a href="teacher-dashboard.html" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-lg text-slate-400 hover:text-white text-sm font-medium">
+      <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+      Dashboard
+    </a>
+    <a href="teacher-classes.html" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-lg text-slate-400 hover:text-white text-sm font-medium">
+      <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+      My Classes
+    </a>
+    <a href="teacher-students.html" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-lg text-slate-400 hover:text-white text-sm font-medium">
+      <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+      Students
+    </a>
+    <a href="teacher-assignments.html" class="sidebar-link active flex items-center gap-3 px-4 py-3 rounded-lg text-amber-400 text-sm font-medium">
+      <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m3 7h3M9 17h3"/></svg>
+      Assignments
+    </a>
+    <a href="teacher-attendance.html" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-lg text-slate-400 hover:text-white text-sm font-medium">
+      <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+      Attendance
+    </a>
+  </nav>
+  <div class="p-4 border-t border-white/5">
+    <button onclick="logout()" class="w-full py-2 rounded-lg bg-coral-500 hover:bg-coral-400 text-white text-sm font-semibold transition-all">Logout</button>
+  </div>
+</aside>
+
+<!-- Main Content -->
+<div class="flex-1 flex flex-col min-h-screen">
+
+<!-- Topbar -->
+<div class="topbar px-4 lg:px-6 py-4 flex items-center justify-between">
+  <h1 class="display text-2xl font-bold text-white">Assignments</h1>
+  <div id="userProfile" class="flex items-center gap-4">
+    <div class="text-right">
+      <p id="userName" class="text-white font-semibold text-sm"></p>
+      <p class="text-slate-400 text-xs" id="userSubject"></p>
+    </div>
+    <div id="userAvatar" class="w-10 h-10 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center text-white font-semibold"></div>
+  </div>
+</div>
+
+<!-- Main Content Area -->
+<main class="flex-1 p-4 lg:p-6 space-y-6 overflow-auto">
+
+  <!-- Page Header -->
+  <div class="card p-6 flex items-center justify-between">
+    <div>
+      <h2 class="display text-2xl font-black text-white mb-2">Create & Manage Assignments</h2>
+      <p class="text-slate-400 text-sm">Assign work to your students and track submissions</p>
+    </div>
+    <button class="px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-white text-sm font-semibold transition-all">+ New Assignment</button>
+  </div>
+
+  <!-- Assignments Grid -->
+  <div id="assignmentsGrid" class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <!-- Assignments will be populated here -->
+  </div>
+
+</main>
+
+</div>
+
+</div>
+
+<script>
+const user = authGuard('Teacher');
+const teachers = getTeachers();
+const teacher = teachers.find(t => t.email === user.email);
+
+document.getElementById('userName').textContent = user.name;
+document.getElementById('userSubject').textContent = user.subject;
+document.getElementById('userAvatar').textContent = user.avatar;
+
+const assignments = [
+  {id: 1, title: 'Chapter 5: Advanced Calculus', class: 'Advanced Mathematics', dueDate: 'Dec 12, 2024', submitted: 18, total: 20, description: 'Complete exercises 5.1 to 5.8 and submit solutions'},
+  {id: 2, title: 'Lab Report: Gravity Experiment', class: 'Physics Fundamentals', dueDate: 'Dec 15, 2024', submitted: 15, total: 24, description: 'Write detailed report on gravity experiment with calculations'},
+  {id: 3, title: 'Essay: Shakespeare Analysis', class: 'World Literature', dueDate: 'Dec 18, 2024', submitted: 8, total: 30, description: 'Analytical essay on Hamlet (2000-2500 words)'},
+  {id: 4, title: 'Project Presentation', class: 'Web Development', dueDate: 'Dec 20, 2024', submitted: 12, total: 22, description: 'Present your final web development project'},
+];
+
+const assignmentsHTML = assignments.map(assignment => `
+  <div class="assignment-card card p-6 border border-white/10 cursor-pointer transition-all">
+    <div class="flex items-start justify-between mb-4">
+      <div>
+        <h3 class="text-white font-semibold mb-1">${assignment.title}</h3>
+        <p class="text-slate-400 text-xs">${assignment.class}</p>
+      </div>
+      <button class="text-slate-400 hover:text-white text-sm">⋮</button>
+    </div>
+    
+    <p class="text-slate-400 text-sm mb-4">${assignment.description}</p>
+    
+    <div class="space-y-3 mb-4">
+      <div>
+        <div class="flex items-center justify-between text-sm mb-2">
+          <span class="text-slate-400">Submissions</span>
+          <span class="text-amber-400 font-semibold">${assignment.submitted}/${assignment.total}</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-bar-fill bg-gradient-to-r from-amber-400 to-amber-500" style="width: ${(assignment.submitted/assignment.total)*100}%"></div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="flex items-center justify-between text-sm">
+      <span class="text-slate-400">Due:</span>
+      <span class="text-white font-medium">${assignment.dueDate}</span>
+    </div>
+    
+    <button class="w-full mt-4 px-4 py-2 rounded-lg bg-amber-500 hover:bg-amber-400 text-white text-sm font-semibold transition-all">
+      View Submissions →
+    </button>
+  </div>
+`).join('');
+
+document.getElementById('assignmentsGrid').innerHTML = assignmentsHTML;
+</script>
+
+</body>
+</html>

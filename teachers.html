@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>EduCore Pro — Teachers</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<script>tailwind.config={theme:{extend:{fontFamily:{display:['Fraunces','serif'],body:['DM Sans','sans-serif']},colors:{navy:{900:'#0a0f1e',800:'#0d1529',700:'#111d3a',600:'#162347',500:'#1e2f5a'},teal:{400:'#2dd4bf',500:'#14b8a6',600:'#0d9488'},amber:{400:'#fbbf24',500:'#f59e0b'},coral:{400:'#fb7185',500:'#f43f5e'},violet:{400:'#a78bfa',500:'#8b5cf6'}}}}}</script>
+<script src="shared.js"></script>
+<style>
+*{font-family:'DM Sans',sans-serif}.display{font-family:'Fraunces',serif}
+body{background:#0a0f1e;color:#fff}
+.card{background:rgba(13,21,41,0.9);border:1px solid rgba(255,255,255,0.07);backdrop-filter:blur(12px);border-radius:1rem}
+.input-field{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:#fff;transition:all .3s;border-radius:.75rem;padding:.625rem 1rem;font-size:.875rem;width:100%}
+.input-field:focus{outline:none;border-color:rgba(45,212,191,0.6);box-shadow:0 0 0 3px rgba(45,212,191,0.1)}
+.select-field{background:rgba(13,21,41,.95);border:1px solid rgba(255,255,255,0.1);color:#fff;border-radius:.75rem;padding:.625rem 1rem;font-size:.875rem;width:100%}
+.select-field:focus{outline:none;border-color:rgba(45,212,191,.6)}
+.grid-bg{position:fixed;inset:0;background-image:linear-gradient(rgba(45,212,191,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(45,212,191,.03) 1px,transparent 1px);background-size:48px 48px;pointer-events:none}
+.modal-bg{background:rgba(0,0,0,.7);backdrop-filter:blur(4px)}
+.btn-primary{background:linear-gradient(135deg,#14b8a6,#0d9488);transition:all .3s}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(20,184,166,.35)}
+.teacher-card{transition:all .25s;cursor:pointer}
+.teacher-card:hover{transform:translateY(-4px);border-color:rgba(255,255,255,.15)}
+.star{color:#fbbf24}
+</style>
+</head>
+<body class="min-h-screen">
+<div class="grid-bg"></div>
+<div id="sidebarMount"></div>
+
+<div class="lg:ml-64 flex flex-col min-h-screen">
+  <div id="topbarMount"></div>
+
+  <main class="flex-1 p-4 lg:p-6 space-y-5">
+
+    <div class="flex flex-col sm:flex-row sm:items-center gap-3 justify-between">
+      <div>
+        <h2 class="display text-2xl font-black text-white">Teacher Directory</h2>
+        <p class="text-slate-500 text-sm" id="teacherCount">—</p>
+      </div>
+      <button onclick="openAddModal()" class="btn-primary px-5 py-2.5 rounded-xl text-white text-sm font-semibold flex items-center gap-2 w-fit">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+        Add Teacher
+      </button>
+    </div>
+
+    <!-- Stats -->
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
+      <div class="card p-4"><div class="text-slate-500 text-xs mb-1">Total Teachers</div><div class="display text-2xl font-black text-white" id="totalT">—</div></div>
+      <div class="card p-4"><div class="text-slate-500 text-xs mb-1">Active</div><div class="display text-2xl font-black text-teal-400" id="activeT">—</div></div>
+      <div class="card p-4"><div class="text-slate-500 text-xs mb-1">Total Classes</div><div class="display text-2xl font-black text-amber-400" id="classesT">—</div></div>
+      <div class="card p-4"><div class="text-slate-500 text-xs mb-1">Avg Rating</div><div class="display text-2xl font-black text-violet-400" id="ratingT">—</div></div>
+    </div>
+
+    <!-- Search -->
+    <div class="card p-4">
+      <div class="flex flex-col md:flex-row gap-3">
+        <div class="flex-1 flex items-center gap-2 bg-white/5 border border-white/10 rounded-xl px-3 py-2">
+          <svg class="w-4 h-4 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+          <input type="text" id="searchInput" placeholder="Search teachers..." class="bg-transparent text-slate-300 text-sm outline-none w-full placeholder-slate-600" oninput="render()"/>
+        </div>
+        <select id="subjectFilter" class="select-field md:w-44" onchange="render()">
+          <option value="">All Subjects</option>
+          <option>Mathematics</option><option>Science</option><option>Literature</option>
+          <option>History</option><option>Computer Sci</option><option>Arts</option>
+        </select>
+        <select id="statusFilter" class="select-field md:w-36" onchange="render()">
+          <option value="">All Status</option>
+          <option>Active</option><option>On Leave</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Grid -->
+    <div id="teacherGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+
+  </main>
+</div>
+
+<!-- Add/Edit Modal -->
+<div id="teacherModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
+  <div class="modal-bg absolute inset-0" onclick="closeModal()"></div>
+  <div class="relative w-full max-w-xl bg-navy-800 border border-white/10 rounded-2xl shadow-2xl overflow-y-auto max-h-[90vh]">
+    <div class="p-6 border-b border-white/5 flex items-center justify-between">
+      <h3 class="display text-xl font-black text-white" id="modalTitle">Add Teacher</h3>
+      <button onclick="closeModal()" class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-slate-400 hover:text-white transition-colors">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <form id="teacherForm" class="p-6 space-y-4">
+      <input type="hidden" id="tid"/>
+      <div class="grid grid-cols-2 gap-4">
+        <div><label class="block text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1.5">Full Name *</label><input type="text" id="t_name" class="input-field" placeholder="Dr. Jane Smith" required/></div>
+        <div><label class="block text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1.5">Subject *</label>
+          <select id="t_subject" class="select-field" required>
+            <option>Mathematics</option><option>Science</option><option>Literature</option>
+            <option>History</option><option>Computer Sci</option><option>Arts</option><option>Music</option>
+          </select>
+        </div>
+        <div><label class="block text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1.5">Email *</label><input type="email" id="t_email" class="input-field" placeholder="teacher@school.edu" required/></div>
+        <div><label class="block text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1.5">Phone</label><input type="tel" id="t_phone" class="input-field" placeholder="+1-555-0000"/></div>
+        <div><label class="block text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1.5">Grade Level</label><input type="text" id="t_grade" class="input-field" placeholder="9-12"/></div>
+        <div><label class="block text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1.5">Experience</label><input type="text" id="t_exp" class="input-field" placeholder="5 yrs"/></div>
+        <div><label class="block text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1.5">Status</label>
+          <select id="t_status" class="select-field"><option>Active</option><option>On Leave</option></select>
+        </div>
+        <div><label class="block text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1.5">Joined Date</label><input type="date" id="t_joined" class="input-field"/></div>
+      </div>
+      <div class="flex gap-3 pt-2">
+        <button type="button" onclick="closeModal()" class="flex-1 py-2.5 rounded-xl border border-white/10 text-slate-400 text-sm hover:text-white transition-all">Cancel</button>
+        <button type="submit" class="flex-1 btn-primary py-2.5 rounded-xl text-white text-sm font-semibold">Save Teacher</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+document.getElementById('sidebarMount').innerHTML = renderSidebar('teachers');
+document.getElementById('topbarMount').innerHTML = renderTopbar('Teachers','Manage faculty, subjects & performance');
+
+let teachers = getTeachers();
+let editId = null;
+const avatarColors=['bg-teal-500/20 text-teal-400','bg-amber-400/20 text-amber-400','bg-violet-400/20 text-violet-400','bg-coral-400/20 text-coral-400'];
+const stars = r => '★'.repeat(Math.floor(r))+'☆'.repeat(5-Math.floor(r));
+
+function updateStats(){
+  document.getElementById('totalT').textContent=teachers.length;
+  document.getElementById('activeT').textContent=teachers.filter(t=>t.status==='Active').length;
+  document.getElementById('classesT').textContent=teachers.reduce((a,t)=>a+t.classes,0);
+  document.getElementById('ratingT').textContent=(teachers.reduce((a,t)=>a+t.rating,0)/teachers.length).toFixed(1);
+  document.getElementById('teacherCount').textContent=`${teachers.length} faculty members`;
+}
+
+function render(){
+  const q=document.getElementById('searchInput').value.toLowerCase();
+  const sub=document.getElementById('subjectFilter').value;
+  const st=document.getElementById('statusFilter').value;
+  const list=teachers.filter(t=>{
+    const mq=!q||t.name.toLowerCase().includes(q)||t.subject.toLowerCase().includes(q)||t.email.toLowerCase().includes(q);
+    const ms=!sub||t.subject===sub;
+    const mst=!st||t.status===st;
+    return mq&&ms&&mst;
+  });
+  const grid=document.getElementById('teacherGrid');
+  grid.innerHTML=list.map(t=>`
+  <div class="teacher-card card p-5" onclick="viewTeacher(${t.id})">
+    <div class="flex items-start gap-4 mb-4">
+      <div class="w-14 h-14 rounded-2xl ${avatarColors[t.id%4]} flex items-center justify-center text-lg font-bold flex-shrink-0">${t.avatar}</div>
+      <div class="flex-1 min-w-0">
+        <div class="text-white font-semibold truncate">${t.name}</div>
+        <div class="text-slate-400 text-xs">${t.subject}</div>
+        <div class="flex items-center gap-1 mt-1">
+          <span class="text-amber-400 text-xs">${stars(t.rating)}</span>
+          <span class="text-slate-500 text-xs">${t.rating}</span>
+        </div>
+      </div>
+      <span class="px-2 py-0.5 rounded-full text-xs font-medium ${t.status==='Active'?'bg-teal-500/15 text-teal-400 border border-teal-500/20':'bg-amber-400/15 text-amber-400 border border-amber-400/20'}">${t.status}</span>
+    </div>
+    <div class="grid grid-cols-3 gap-2 mb-4">
+      <div class="bg-white/5 rounded-xl p-2.5 text-center"><div class="text-white text-sm font-bold">${t.classes}</div><div class="text-slate-600 text-xs">Classes</div></div>
+      <div class="bg-white/5 rounded-xl p-2.5 text-center"><div class="text-white text-sm font-bold">${t.students}</div><div class="text-slate-600 text-xs">Students</div></div>
+      <div class="bg-white/5 rounded-xl p-2.5 text-center"><div class="text-white text-sm font-bold">${t.exp}</div><div class="text-slate-600 text-xs">Exp</div></div>
+    </div>
+    <div class="flex items-center gap-2 text-slate-500 text-xs mb-3">
+      <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+      ${t.email}
+    </div>
+    <div class="flex gap-2" onclick="event.stopPropagation()">
+      <button onclick="editTeacher(${t.id})" class="flex-1 py-1.5 rounded-lg border border-amber-400/20 text-amber-400 text-xs hover:bg-amber-400/10 transition-all">Edit</button>
+      <button onclick="removeTeacher(${t.id})" class="flex-1 py-1.5 rounded-lg border border-coral-400/20 text-coral-400 text-xs hover:bg-coral-400/10 transition-all">Remove</button>
+    </div>
+  </div>`).join('');
+  if(!list.length) grid.innerHTML='<div class="col-span-full py-16 text-center text-slate-500">No teachers found</div>';
+}
+
+function viewTeacher(id){
+  const t=teachers.find(x=>x.id===id);
+  alert(`${t.name}\nSubject: ${t.subject}\nEmail: ${t.email}\nGrade: ${t.grade}\nRating: ${t.rating}/5.0\nClasses: ${t.classes} | Students: ${t.students} | Exp: ${t.exp}\nStatus: ${t.status}`);
+}
+
+function openAddModal(){
+  editId=null;
+  document.getElementById('modalTitle').textContent='Add Teacher';
+  document.getElementById('teacherForm').reset();
+  document.getElementById('tid').value='';
+  document.getElementById('t_joined').value=new Date().toISOString().split('T')[0];
+  document.getElementById('teacherModal').classList.remove('hidden');
+}
+function editTeacher(id){
+  editId=id;
+  const t=teachers.find(x=>x.id===id);
+  document.getElementById('modalTitle').textContent='Edit Teacher';
+  document.getElementById('tid').value=t.id;
+  document.getElementById('t_name').value=t.name;
+  document.getElementById('t_subject').value=t.subject;
+  document.getElementById('t_email').value=t.email;
+  document.getElementById('t_phone').value=t.phone||'';
+  document.getElementById('t_grade').value=t.grade||'';
+  document.getElementById('t_exp').value=t.exp||'';
+  document.getElementById('t_status').value=t.status;
+  document.getElementById('t_joined').value=t.joined||'';
+  document.getElementById('teacherModal').classList.remove('hidden');
+}
+function closeModal(){document.getElementById('teacherModal').classList.add('hidden');}
+function removeTeacher(id){
+  if(!confirm('Remove this teacher?'))return;
+  teachers=teachers.filter(t=>t.id!==id);
+  localStorage.setItem('edu_teachers',JSON.stringify(teachers));
+  updateStats();render();
+}
+document.getElementById('teacherForm').addEventListener('submit',function(e){
+  e.preventDefault();
+  const mk=n=>n.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+  const d={
+    name:document.getElementById('t_name').value.trim(),
+    subject:document.getElementById('t_subject').value,
+    email:document.getElementById('t_email').value.trim(),
+    phone:document.getElementById('t_phone').value.trim(),
+    grade:document.getElementById('t_grade').value.trim(),
+    exp:document.getElementById('t_exp').value.trim(),
+    status:document.getElementById('t_status').value,
+    joined:document.getElementById('t_joined').value,
+  };
+  if(editId){
+    const i=teachers.findIndex(t=>t.id===editId);
+    teachers[i]={...teachers[i],...d};
+  }else{
+    d.id=Date.now();d.avatar=mk(d.name);d.classes=0;d.students=0;d.rating=4.5;
+    teachers.unshift(d);
+  }
+  localStorage.setItem('edu_teachers',JSON.stringify(teachers));
+  closeModal();updateStats();render();
+});
+updateStats();render();
+</script>
+</body>
+</html>

@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>EduCore Pro — Login</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: { display: ['Fraunces','serif'], body: ['DM Sans','sans-serif'] },
+        colors: {
+          navy: { 900:'#0a0f1e', 800:'#0d1529', 700:'#111d3a', 600:'#162347', 500:'#1e2f5a' },
+          teal: { 400:'#2dd4bf', 500:'#14b8a6', 600:'#0d9488' },
+          amber: { 400:'#fbbf24', 500:'#f59e0b' },
+          coral: { 400:'#fb7185', 500:'#f43f5e' }
+        }
+      }
+    }
+  }
+</script>
+<style>
+  * { font-family: 'DM Sans', sans-serif; }
+  .display { font-family: 'Fraunces', serif; }
+  body { background: #0a0f1e; overflow: hidden; }
+  .mesh { position:fixed;inset:0;background:radial-gradient(ellipse at 20% 50%, rgba(45,212,191,0.08) 0%, transparent 60%),radial-gradient(ellipse at 80% 20%, rgba(251,191,36,0.06) 0%, transparent 50%),radial-gradient(ellipse at 60% 80%, rgba(244,63,94,0.05) 0%, transparent 50%); pointer-events:none; }
+  .grid-bg { position:fixed;inset:0;background-image:linear-gradient(rgba(45,212,191,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(45,212,191,0.04) 1px,transparent 1px);background-size:48px 48px; pointer-events:none; }
+  .card-glow { box-shadow:0 0 0 1px rgba(45,212,191,0.15),0 24px 64px rgba(0,0,0,0.6),0 0 80px rgba(45,212,191,0.06); }
+  .input-field { background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:#fff;transition:all .3s; }
+  .input-field:focus { outline:none;border-color:rgba(45,212,191,0.6);background:rgba(45,212,191,0.05);box-shadow:0 0 0 3px rgba(45,212,191,0.1); }
+  .btn-primary { background:linear-gradient(135deg,#14b8a6,#0d9488);transition:all .3s; }
+  .btn-primary:hover { transform:translateY(-1px);box-shadow:0 8px 32px rgba(20,184,166,0.4); }
+  .float { animation:float 6s ease-in-out infinite; }
+  .float2 { animation:float 8s ease-in-out infinite 2s; }
+  @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-16px)} }
+  .slide-up { animation:slideUp .6s ease forwards; }
+  @keyframes slideUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+  .orb { position:absolute;border-radius:50%;filter:blur(60px);animation:pulse 4s ease-in-out infinite; }
+  @keyframes pulse { 0%,100%{opacity:.4} 50%{opacity:.8} }
+  .err-shake { animation:shake .4s ease; }
+  @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-8px)} 75%{transform:translateX(8px)} }
+</style>
+</head>
+<body class="min-h-screen flex items-center justify-center">
+<div class="grid-bg"></div>
+<div class="mesh"></div>
+
+<!-- Floating orbs -->
+<div class="orb w-72 h-72 bg-teal-500/20 top-10 left-10 fixed"></div>
+<div class="orb w-48 h-48 bg-amber-400/10 bottom-20 right-20 fixed" style="animation-delay:2s"></div>
+<div class="orb w-32 h-32 bg-coral-500/15 top-1/2 right-10 fixed" style="animation-delay:1s"></div>
+
+<div class="relative z-10 w-full max-w-5xl mx-auto px-4 flex items-center min-h-screen py-8">
+  <div class="w-full grid grid-cols-1 lg:grid-cols-2 gap-0 rounded-2xl overflow-hidden card-glow">
+
+    <!-- Left Panel -->
+    <div class="bg-navy-800/90 backdrop-blur-xl p-10 lg:p-14 flex flex-col justify-between relative overflow-hidden">
+      <div class="absolute inset-0 bg-gradient-to-br from-teal-500/8 to-transparent pointer-events-none"></div>
+      <!-- Logo -->
+      <div class="slide-up">
+        <div class="flex items-center gap-3 mb-12">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-teal-400 to-teal-600 flex items-center justify-center shadow-lg shadow-teal-500/30">
+            <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+          </div>
+          <span class="display text-white text-2xl font-bold">Parvati High School <span class="text-teal-400">Bikram</span></span>
+        </div>
+
+        <div class="mb-10">
+          <h1 class="display text-4xl lg:text-5xl font-black text-white leading-tight mb-4">
+            Smarter School <br/><span class="text-teal-400">Management</span>
+          </h1>
+          <p class="text-slate-400 text-base leading-relaxed">The all-in-one platform for administrators to manage students, teachers, classes, and performance — all in one place.</p>
+        </div>
+
+        <!-- Feature pills -->
+        <div class="space-y-3">
+          <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-lg bg-teal-500/20 flex items-center justify-center flex-shrink-0">
+              <svg class="w-4 h-4 text-teal-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            </div>
+            <span class="text-slate-300 text-sm">Real-time attendance tracking & analytics</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-lg bg-amber-400/20 flex items-center justify-center flex-shrink-0">
+              <svg class="w-4 h-4 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+            </div>
+            <span class="text-slate-300 text-sm">Complete student & teacher management</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-lg bg-coral-400/20 flex items-center justify-center flex-shrink-0">
+              <svg class="w-4 h-4 text-coral-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+            </div>
+            <span class="text-slate-300 text-sm">Advanced grade & performance dashboards</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats row -->
+
+      <div class="slide-up mt-10 pt-8 border-t border-white/10 grid grid-cols-3 gap-4">
+        <div><div class="display text-2xl font-black text-white">1,240</div><div class="text-slate-500 text-xs">Students</div></div>
+        <div><div class="display text-2xl font-black text-teal-400">98%</div><div class="text-slate-500 text-xs">Satisfaction</div></div>
+        <div><div class="display text-2xl font-black text-amber-400">52</div><div class="text-slate-500 text-xs">Teachers</div></div>
+      </div>
+    </div>
+
+    <!-- Right Panel — Login Form -->
+    <div class="bg-navy-900/95 backdrop-blur-xl p-10 lg:p-14 flex flex-col justify-center">
+      <div class="slide-up" style="animation-delay:.1s">
+        <h2 class="display text-3xl font-black text-white mb-2">Welcome back</h2>
+        <p class="text-slate-500 text-sm mb-8">Sign in to your admin panel</p>
+
+
+
+        <div id="errorMsg" class="hidden mb-4 p-3 rounded-xl bg-coral-500/10 border border-coral-500/30">
+          <p class="text-coral-400 text-sm">❌ Invalid credentials. Please try again.</p>
+        </div>
+
+        <form id="loginForm" class="space-y-5">
+          <div>
+            <label class="block text-slate-400 text-xs font-semibold uppercase tracking-wider mb-2">Email Address</label>
+            <input type="email" id="email" value="admin@educore.com" class="input-field w-full px-4 py-3 rounded-xl text-sm" placeholder="admin@educore.com"/>
+          </div>
+          <div>
+            <label class="block text-slate-400 text-xs font-semibold uppercase tracking-wider mb-2">Password</label>
+            <div class="relative">
+              <input type="password" id="password" value="admin123" class="input-field w-full px-4 py-3 rounded-xl text-sm pr-12" placeholder="••••••••"/>
+              <button type="button" onclick="togglePw()" class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 hover:text-teal-400 transition-colors">
+                <svg id="eyeIcon" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="flex items-center justify-between">
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" id="remember" class="w-4 h-4 rounded accent-teal-500"/>
+              <span class="text-slate-400 text-sm">Remember me</span>
+            </label>
+            <a href="#" class="text-teal-400 text-sm hover:text-teal-300 transition-colors">Forgot password?</a>
+          </div>
+
+          <button type="submit" class="btn-primary w-full py-3.5 rounded-xl text-white font-semibold text-sm tracking-wide">
+            <span id="btnText">Sign In to Dashboard</span>
+          </button>
+        </form>
+
+        <!-- Role selector -->
+        <div class="mt-6">
+          <p class="text-slate-500 text-xs text-center mb-3">Sign in as</p>
+          <div class="grid grid-cols-3 gap-2">
+            <button onclick="setRole('Admin')" class="px-3 py-2 rounded-lg border border-teal-500/40 text-teal-400 text-xs hover:bg-teal-500/10 transition-all">Admin</button>
+            <button onclick="setRole('Teacher')" class="px-3 py-2 rounded-lg border border-white/10 text-slate-400 text-xs hover:border-amber-400/40 hover:text-amber-400 transition-all">Teacher</button>
+            <button onclick="setRole('Student')" class="px-3 py-2 rounded-lg border border-white/10 text-slate-400 text-xs hover:border-coral-400/40 hover:text-coral-400 transition-all">Student</button>
+          </div>
+        </div>
+
+        <p class="text-center text-slate-600 text-xs mt-8">© 2024 EduCore Pro. Secure Admin Portal.</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script src="shared.js"></script>
+<script>
+function setRole(r){
+  const map={
+    Admin:'admin@educore.com',
+    Teacher:'teacher1@school.edu',
+    Student:'aarav.s@school.edu'
+  };
+  document.getElementById('email').value=map[r];
+  document.getElementById('password').value=r.includes('Admin')?'admin123':(r.includes('Teacher')?'teacher123':'student123');
+}
+
+function togglePw(){
+  const pw=document.getElementById('password');
+  pw.type=pw.type==='password'?'text':'password';
+}
+
+document.getElementById('loginForm').addEventListener('submit',function(e){
+  e.preventDefault();
+  const email=document.getElementById('email').value.trim();
+  const password=document.getElementById('password').value.trim();
+  const btn=document.getElementById('btnText');
+  
+  btn.textContent='Signing in...';
+  setTimeout(()=>{
+    let user=null;
+    let redirectUrl='dashboard.html';
+    
+    // Admin login - check against all 10 demo admins
+    if(password==='admin123'){
+      const adminMatch=DEMO_ADMINS.find(a=>a.email===email);
+      if(adminMatch){
+        user={name:adminMatch.name,role:'Super Admin',email,avatar:adminMatch.name.split(' ').map(n=>n[0]).join('')};
+        redirectUrl='dashboard.html';
+      }
+    }
+    // Teacher login
+    else if(password==='teacher123'){
+      const teachers=getTeachers();
+      const teacher=teachers.find(t=>t.email===email);
+      if(teacher){
+        user={id:teacher.id,name:teacher.name,role:'Teacher',email:teacher.email,avatar:teacher.avatar,subject:teacher.subject};
+        redirectUrl='teacher-dashboard.html';
+      }
+    }
+    // Student login
+    else if(password==='student123'){
+      const students=getStudents();
+      const student=students.find(s=>s.email===email);
+      if(student){
+        user={id:student.id,name:student.name,role:'Student',email:student.email,avatar:student.avatar,grade:student.grade};
+        redirectUrl='student-dashboard.html';
+      }
+    }
+    
+    if(user){
+      localStorage.setItem('edu_auth',JSON.stringify(user));
+      window.location.href=redirectUrl;
+    } else {
+      const err=document.getElementById('errorMsg');
+      err.classList.remove('hidden');
+      err.classList.add('err-shake');
+      setTimeout(()=>err.classList.remove('err-shake'),400);
+      btn.textContent='Sign In to Dashboard';
+    }
+  },800);
+});
+
+// Check already logged in and redirect to appropriate dashboard
+if(localStorage.getItem('edu_auth')){
+  const user=JSON.parse(localStorage.getItem('edu_auth'));
+  if(user.role==='Super Admin'){
+    window.location.href='dashboard.html';
+  } else if(user.role==='Teacher'){
+    window.location.href='teacher-dashboard.html';
+  } else if(user.role==='Student'){
+    window.location.href='student-dashboard.html';
+  }
+}
+</script>
+</body>
+</html>

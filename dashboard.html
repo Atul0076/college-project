@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>EduCore Pro — Dashboard</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<script>
+tailwind.config={theme:{extend:{fontFamily:{display:['Fraunces','serif'],body:['DM Sans','sans-serif']},colors:{navy:{900:'#0a0f1e',800:'#0d1529',700:'#111d3a',600:'#162347',500:'#1e2f5a'},teal:{400:'#2dd4bf',500:'#14b8a6',600:'#0d9488'},amber:{400:'#fbbf24',500:'#f59e0b'},coral:{400:'#fb7185',500:'#f43f5e'},violet:{400:'#a78bfa',500:'#8b5cf6'}}}}}
+</script>
+<script src="shared.js"></script>
+<style>
+*{font-family:'DM Sans',sans-serif}.display{font-family:'Fraunces',serif}
+body{background:#0a0f1e;color:#fff}
+.card{background:rgba(13,21,41,0.8);border:1px solid rgba(255,255,255,0.07);backdrop-filter:blur(12px);border-radius:1rem}
+.card-glow-teal{box-shadow:0 0 0 1px rgba(45,212,191,0.15),0 8px 32px rgba(0,0,0,0.4)}
+.stat-card{transition:all .3s}
+.stat-card:hover{transform:translateY(-3px);border-color:rgba(45,212,191,0.25)}
+.bar-fill{transition:width 1.2s cubic-bezier(.4,0,.2,1)}
+.ring-track{stroke:#1e2f5a;stroke-width:8;fill:none}
+.ring-progress{stroke-width:8;fill:none;stroke-linecap:round;transition:stroke-dashoffset 1.5s ease}
+.grid-bg{position:fixed;inset:0;background-image:linear-gradient(rgba(45,212,191,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(45,212,191,0.03) 1px,transparent 1px);background-size:48px 48px;pointer-events:none}
+.slide-in{animation:slideIn .5s ease forwards;opacity:0}
+@keyframes slideIn{to{opacity:1;transform:translateY(0)}from{opacity:0;transform:translateY(16px)}}
+.pulse-dot{animation:pulseDot 2s infinite}
+@keyframes pulseDot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
+</style>
+</head>
+<body class="min-h-screen">
+<div class="grid-bg"></div>
+<div id="appRoot" class="flex min-h-screen">
+  <!-- Sidebar injected here -->
+  <div id="sidebarMount"></div>
+
+  <!-- Main -->
+  <div class="flex-1 lg:ml-64 flex flex-col min-h-screen">
+    <div id="topbarMount"></div>
+
+    <main class="flex-1 p-4 lg:p-6 space-y-6">
+
+      <!-- Welcome Banner -->
+      <div id="s1" class="slide-in card relative overflow-hidden p-6" style="animation-delay:.1s">
+        <div class="absolute inset-0 bg-gradient-to-r from-teal-500/10 to-transparent pointer-events-none"></div>
+        <div class="absolute right-0 top-0 w-64 h-full opacity-10" style="background:radial-gradient(circle at right,#14b8a6,transparent 70%)"></div>
+        <div class="relative flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+          <div>
+            <p class="text-slate-400 text-sm mb-1">Good morning, <span class="text-teal-400" id="userName"></span> 👋</p>
+            <h2 class="display text-2xl font-black text-white mb-2">Here's what's happening today</h2>
+            <p class="text-slate-400 text-sm" id="todayDate"></p>
+          </div>
+          <div class="flex gap-3">
+            <a href="students.html" class="px-5 py-2.5 rounded-xl bg-teal-500 hover:bg-teal-400 text-white text-sm font-semibold transition-all hover:shadow-lg hover:shadow-teal-500/30">+ Add Student</a>
+            <button class="px-5 py-2.5 rounded-xl border border-white/10 text-slate-300 text-sm font-semibold hover:border-white/20 transition-all">View Reports</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stat Cards -->
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div id="s2" class="slide-in stat-card card p-5" style="animation-delay:.15s">
+          <div class="flex items-start justify-between mb-4">
+            <div class="w-10 h-10 rounded-xl bg-teal-500/15 flex items-center justify-center">
+              <svg class="w-5 h-5 text-teal-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+            </div>
+            <span class="text-xs text-teal-400 bg-teal-500/15 px-2 py-0.5 rounded-full">+12%</span>
+          </div>
+          <div class="display text-3xl font-black text-white mb-1" id="statStudents">0</div>
+          <div class="text-slate-500 text-xs">Total Students</div>
+          <div class="mt-3 h-1 bg-navy-700 rounded-full overflow-hidden"><div class="h-full bg-teal-500 rounded-full bar-fill" style="width:0" data-w="78"></div></div>
+        </div>
+        <div id="s3" class="slide-in stat-card card p-5" style="animation-delay:.2s">
+          <div class="flex items-start justify-between mb-4">
+            <div class="w-10 h-10 rounded-xl bg-amber-400/15 flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+            </div>
+            <span class="text-xs text-amber-400 bg-amber-400/15 px-2 py-0.5 rounded-full">+3%</span>
+          </div>
+          <div class="display text-3xl font-black text-white mb-1">52</div>
+          <div class="text-slate-500 text-xs">Total Teachers</div>
+          <div class="mt-3 h-1 bg-navy-700 rounded-full overflow-hidden"><div class="h-full bg-amber-400 rounded-full bar-fill" style="width:0" data-w="52"></div></div>
+        </div>
+        <div id="s4" class="slide-in stat-card card p-5" style="animation-delay:.25s">
+          <div class="flex items-start justify-between mb-4">
+            <div class="w-10 h-10 rounded-xl bg-violet-400/15 flex items-center justify-center">
+              <svg class="w-5 h-5 text-violet-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+            </div>
+            <span class="text-xs text-violet-400 bg-violet-400/15 px-2 py-0.5 rounded-full">Active</span>
+          </div>
+          <div class="display text-3xl font-black text-white mb-1">24</div>
+          <div class="text-slate-500 text-xs">Active Classes</div>
+          <div class="mt-3 h-1 bg-navy-700 rounded-full overflow-hidden"><div class="h-full bg-violet-400 rounded-full bar-fill" style="width:0" data-w="65"></div></div>
+        </div>
+        <div id="s5" class="slide-in stat-card card p-5" style="animation-delay:.3s">
+          <div class="flex items-start justify-between mb-4">
+            <div class="w-10 h-10 rounded-xl bg-coral-400/15 flex items-center justify-center">
+              <svg class="w-5 h-5 text-coral-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+            </div>
+            <span class="text-xs text-coral-400 bg-coral-400/15 px-2 py-0.5 rounded-full">94.2%</span>
+          </div>
+          <div class="display text-3xl font-black text-white mb-1">94%</div>
+          <div class="text-slate-500 text-xs">Avg Attendance</div>
+          <div class="mt-3 h-1 bg-navy-700 rounded-full overflow-hidden"><div class="h-full bg-coral-400 rounded-full bar-fill" style="width:0" data-w="94"></div></div>
+        </div>
+      </div>
+
+      <!-- Charts Row -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+        <!-- Attendance Chart -->
+        <div id="s6" class="slide-in card p-6 lg:col-span-2" style="animation-delay:.35s">
+          <div class="flex items-center justify-between mb-6">
+            <div>
+              <h3 class="text-white font-semibold text-sm">Weekly Attendance</h3>
+              <p class="text-slate-500 text-xs">Mon–Sat, current week</p>
+            </div>
+            <div class="flex gap-2">
+              <span class="flex items-center gap-1.5 text-xs text-slate-400"><span class="w-2 h-2 rounded-full bg-teal-400"></span>Present</span>
+              <span class="flex items-center gap-1.5 text-xs text-slate-400"><span class="w-2 h-2 rounded-full bg-coral-400"></span>Absent</span>
+            </div>
+          </div>
+          <div class="flex items-end gap-3 h-40">
+            <div class="flex-1 flex flex-col items-center gap-2">
+              <div class="w-full flex gap-1 items-end" style="height:128px">
+                <div class="flex-1 bg-teal-500/20 hover:bg-teal-500/30 rounded-t-md transition-all bar-fill" style="height:0" data-h="89%"></div>
+                <div class="flex-1 bg-coral-400/20 hover:bg-coral-400/30 rounded-t-md transition-all bar-fill" style="height:0" data-h="11%"></div>
+              </div>
+              <span class="text-slate-600 text-xs">Mon</span>
+            </div>
+            <div class="flex-1 flex flex-col items-center gap-2">
+              <div class="w-full flex gap-1 items-end" style="height:128px">
+                <div class="flex-1 bg-teal-500/20 hover:bg-teal-500/30 rounded-t-md transition-all bar-fill" style="height:0" data-h="94%"></div>
+                <div class="flex-1 bg-coral-400/20 hover:bg-coral-400/30 rounded-t-md transition-all bar-fill" style="height:0" data-h="6%"></div>
+              </div>
+              <span class="text-slate-600 text-xs">Tue</span>
+            </div>
+            <div class="flex-1 flex flex-col items-center gap-2">
+              <div class="w-full flex gap-1 items-end" style="height:128px">
+                <div class="flex-1 bg-teal-500/20 hover:bg-teal-500/30 rounded-t-md transition-all bar-fill" style="height:0" data-h="91%"></div>
+                <div class="flex-1 bg-coral-400/20 hover:bg-coral-400/30 rounded-t-md transition-all bar-fill" style="height:0" data-h="9%"></div>
+              </div>
+              <span class="text-slate-600 text-xs">Wed</span>
+            </div>
+            <div class="flex-1 flex flex-col items-center gap-2">
+              <div class="w-full flex gap-1 items-end" style="height:128px">
+                <div class="flex-1 bg-teal-500/20 hover:bg-teal-500/30 rounded-t-md transition-all bar-fill" style="height:0" data-h="97%"></div>
+                <div class="flex-1 bg-coral-400/20 hover:bg-coral-400/30 rounded-t-md transition-all bar-fill" style="height:0" data-h="3%"></div>
+              </div>
+              <span class="text-slate-600 text-xs">Thu</span>
+            </div>
+            <div class="flex-1 flex flex-col items-center gap-2">
+              <div class="w-full flex gap-1 items-end" style="height:128px">
+                <div class="flex-1 bg-teal-500/20 hover:bg-teal-500/30 rounded-t-md transition-all bar-fill" style="height:0" data-h="85%"></div>
+                <div class="flex-1 bg-coral-400/20 hover:bg-coral-400/30 rounded-t-md transition-all bar-fill" style="height:0" data-h="15%"></div>
+              </div>
+              <span class="text-slate-600 text-xs">Fri</span>
+            </div>
+            <div class="flex-1 flex flex-col items-center gap-2">
+              <div class="w-full flex gap-1 items-end" style="height:128px">
+                <div class="flex-1 bg-teal-500/20 hover:bg-teal-500/30 rounded-t-md transition-all bar-fill" style="height:0" data-h="72%"></div>
+                <div class="flex-1 bg-coral-400/20 hover:bg-coral-400/30 rounded-t-md transition-all bar-fill" style="height:0" data-h="28%"></div>
+              </div>
+              <span class="text-slate-600 text-xs">Sat</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- GPA Ring -->
+        <div id="s7" class="slide-in card p-6" style="animation-delay:.4s">
+          <h3 class="text-white font-semibold text-sm mb-1">GPA Distribution</h3>
+          <p class="text-slate-500 text-xs mb-6">Current semester</p>
+          <div class="flex items-center justify-center mb-6">
+            <div class="relative w-36 h-36">
+              <svg class="w-full h-full -rotate-90" viewBox="0 0 120 120">
+                <circle class="ring-track" cx="60" cy="60" r="50"/>
+                <circle class="ring-progress" cx="60" cy="60" r="50" stroke="#2dd4bf" stroke-dasharray="314" stroke-dashoffset="314" id="ring1"/>
+                <circle class="ring-progress" cx="60" cy="60" r="40" stroke="#fbbf24" stroke-dasharray="251" stroke-dashoffset="251" id="ring2" style="stroke-width:7"/>
+                <circle class="ring-progress" cx="60" cy="60" r="30" stroke="#a78bfa" stroke-dasharray="188" stroke-dashoffset="188" id="ring3" style="stroke-width:6"/>
+              </svg>
+              <div class="absolute inset-0 flex flex-col items-center justify-center">
+                <div class="display text-2xl font-black text-white">3.7</div>
+                <div class="text-slate-500 text-xs">Avg GPA</div>
+              </div>
+            </div>
+          </div>
+          <div class="space-y-2">
+            <div class="flex items-center justify-between text-xs"><span class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-teal-400"></span><span class="text-slate-400">A (3.7–4.0)</span></span><span class="text-white font-semibold">38%</span></div>
+            <div class="flex items-center justify-between text-xs"><span class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-amber-400"></span><span class="text-slate-400">B (3.0–3.6)</span></span><span class="text-white font-semibold">45%</span></div>
+            <div class="flex items-center justify-between text-xs"><span class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-violet-400"></span><span class="text-slate-400">C (2.0–2.9)</span></span><span class="text-white font-semibold">17%</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom Row -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+        <!-- Recent Students -->
+        <div id="s8" class="slide-in card p-6 lg:col-span-2" style="animation-delay:.45s">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-white font-semibold text-sm">Recent Students</h3>
+            <a href="students.html" class="text-teal-400 text-xs hover:text-teal-300 transition-colors font-medium">View all →</a>
+          </div>
+          <div class="space-y-2" id="recentStudentsList"></div>
+        </div>
+
+        <!-- Quick Actions + Alerts -->
+        <div class="space-y-4">
+          <div id="s9" class="slide-in card p-5" style="animation-delay:.5s">
+            <h3 class="text-white font-semibold text-sm mb-3">Quick Actions</h3>
+            <div class="space-y-2">
+              <a href="students.html" class="flex items-center gap-3 p-3 rounded-xl bg-white/5 hover:bg-teal-500/10 border border-transparent hover:border-teal-500/20 transition-all text-sm text-slate-300 hover:text-teal-300">
+                <svg class="w-4 h-4 text-teal-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                Add New Student
+              </a>
+              <a href="teachers.html" class="flex items-center gap-3 p-3 rounded-xl bg-white/5 hover:bg-amber-400/10 border border-transparent hover:border-amber-400/20 transition-all text-sm text-slate-300 hover:text-amber-300">
+                <svg class="w-4 h-4 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                Register Teacher
+              </a>
+              <a href="attendance.html" class="flex items-center gap-3 p-3 rounded-xl bg-white/5 hover:bg-violet-400/10 border border-transparent hover:border-violet-400/20 transition-all text-sm text-slate-300 hover:text-violet-300">
+                <svg class="w-4 h-4 text-violet-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+                Mark Attendance
+              </a>
+              <a href="classes.html" class="flex items-center gap-3 p-3 rounded-xl bg-white/5 hover:bg-coral-400/10 border border-transparent hover:border-coral-400/20 transition-all text-sm text-slate-300 hover:text-coral-300">
+                <svg class="w-4 h-4 text-coral-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+                Create Class
+              </a>
+            </div>
+          </div>
+
+          <div id="s10" class="slide-in card p-5" style="animation-delay:.55s">
+            <div class="flex items-center gap-2 mb-3">
+              <div class="pulse-dot w-2 h-2 rounded-full bg-coral-400"></div>
+              <h3 class="text-white font-semibold text-sm">Alerts</h3>
+            </div>
+            <div class="space-y-2">
+              <div class="flex items-start gap-2.5 p-2.5 rounded-lg bg-amber-400/10 border border-amber-400/15">
+                <svg class="w-3.5 h-3.5 text-amber-400 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                <div><p class="text-amber-300 text-xs font-medium">Low Attendance</p><p class="text-slate-500 text-xs">Noah Thompson: 72%</p></div>
+              </div>
+              <div class="flex items-start gap-2.5 p-2.5 rounded-lg bg-teal-500/10 border border-teal-500/15">
+                <svg class="w-3.5 h-3.5 text-teal-400 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <div><p class="text-teal-300 text-xs font-medium">Top Performer</p><p class="text-slate-500 text-xs">Amara Osei: GPA 4.0</p></div>
+              </div>
+              <div class="flex items-start gap-2.5 p-2.5 rounded-lg bg-coral-400/10 border border-coral-400/15">
+                <svg class="w-3.5 h-3.5 text-coral-400 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <div><p class="text-coral-300 text-xs font-medium">Reports Due</p><p class="text-slate-500 text-xs">Grade reports: Friday</p></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Subject Performance -->
+      <div id="s11" class="slide-in card p-6" style="animation-delay:.6s">
+        <div class="flex items-center justify-between mb-6">
+          <div>
+            <h3 class="text-white font-semibold text-sm">Subject Performance</h3>
+            <p class="text-slate-500 text-xs">Average grades by department</p>
+          </div>
+        </div>
+        <div class="space-y-4">
+          <div class="flex items-center gap-4">
+            <span class="text-slate-400 text-xs w-28 flex-shrink-0">Mathematics</span>
+            <div class="flex-1 h-2 bg-navy-700 rounded-full overflow-hidden"><div class="h-full bg-teal-500 rounded-full bar-fill" style="width:0" data-w="88%"></div></div>
+            <span class="text-white text-xs font-semibold w-8">88%</span>
+          </div>
+          <div class="flex items-center gap-4">
+            <span class="text-slate-400 text-xs w-28 flex-shrink-0">Science</span>
+            <div class="flex-1 h-2 bg-navy-700 rounded-full overflow-hidden"><div class="h-full bg-amber-400 rounded-full bar-fill" style="width:0" data-w="82%"></div></div>
+            <span class="text-white text-xs font-semibold w-8">82%</span>
+          </div>
+          <div class="flex items-center gap-4">
+            <span class="text-slate-400 text-xs w-28 flex-shrink-0">Literature</span>
+            <div class="flex-1 h-2 bg-navy-700 rounded-full overflow-hidden"><div class="h-full bg-violet-400 rounded-full bar-fill" style="width:0" data-w="91%"></div></div>
+            <span class="text-white text-xs font-semibold w-8">91%</span>
+          </div>
+          <div class="flex items-center gap-4">
+            <span class="text-slate-400 text-xs w-28 flex-shrink-0">History</span>
+            <div class="flex-1 h-2 bg-navy-700 rounded-full overflow-hidden"><div class="h-full bg-coral-400 rounded-full bar-fill" style="width:0" data-w="75%"></div></div>
+            <span class="text-white text-xs font-semibold w-8">75%</span>
+          </div>
+          <div class="flex items-center gap-4">
+            <span class="text-slate-400 text-xs w-28 flex-shrink-0">Computer Sci</span>
+            <div class="flex-1 h-2 bg-navy-700 rounded-full overflow-hidden"><div class="h-full bg-teal-400 rounded-full bar-fill" style="width:0" data-w="94%"></div></div>
+            <span class="text-white text-xs font-semibold w-8">94%</span>
+          </div>
+          <div class="flex items-center gap-4">
+            <span class="text-slate-400 text-xs w-28 flex-shrink-0">Arts</span>
+            <div class="flex-1 h-2 bg-navy-700 rounded-full overflow-hidden"><div class="h-full bg-amber-400 rounded-full bar-fill" style="width:0" data-w="86%"></div></div>
+            <span class="text-white text-xs font-semibold w-8">86%</span>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<script>
+// Check if user is admin
+const user = authGuard('Super Admin');
+
+// Redirect non-admins to appropriate dashboards
+const currentUser = getCurrentUser();
+if (currentUser && currentUser.role === 'Teacher') {
+  window.location.href = 'teacher-dashboard.html';
+} else if (currentUser && currentUser.role === 'Student') {
+  window.location.href = 'student-dashboard.html';
+}
+
+document.getElementById('sidebarMount').innerHTML = renderSidebar('dashboard');
+document.getElementById('topbarMount').innerHTML = renderTopbar('Dashboard', 'Welcome back — here\'s your school overview');
+
+document.getElementById('userName').textContent = user.name.split(' ')[1] || user.name;
+document.getElementById('todayDate').textContent = new Date().toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+
+const students = getStudents();
+document.getElementById('statStudents').textContent = students.length;
+
+// Recent students
+const list = document.getElementById('recentStudentsList');
+students.slice(0,5).forEach(s=>{
+  const colors=['teal','amber','violet','coral'];
+  const c=colors[s.id%4];
+  const colorMap={teal:'bg-teal-500/20 text-teal-400',amber:'bg-amber-400/20 text-amber-400',violet:'bg-violet-400/20 text-violet-400',coral:'bg-coral-400/20 text-coral-400'};
+  list.innerHTML+=`
+  <div class="flex items-center gap-3 p-3 rounded-xl hover:bg-white/5 transition-all">
+    <div class="w-9 h-9 rounded-xl ${colorMap[c]} flex items-center justify-center text-xs font-bold flex-shrink-0">${s.avatar}</div>
+    <div class="flex-1 min-w-0">
+      <div class="text-white text-sm font-medium truncate">${s.name}</div>
+      <div class="text-slate-500 text-xs">${s.grade} · ${s.subject}</div>
+    </div>
+    <div class="text-right flex-shrink-0">
+      <div class="text-white text-sm font-semibold">${s.gpa}</div>
+      <div class="text-slate-500 text-xs">GPA</div>
+    </div>
+    <span class="ml-2 px-2 py-0.5 rounded-full text-xs font-medium ${s.status==='Active'?'bg-teal-500/15 text-teal-400':'bg-coral-400/15 text-coral-400'}">${s.status}</span>
+  </div>`;
+});
+
+// Animate bars
+setTimeout(()=>{
+  document.querySelectorAll('.bar-fill[data-w]').forEach(el=>{el.style.width=el.dataset.w;});
+  document.querySelectorAll('.bar-fill[data-h]').forEach(el=>{el.style.height=el.dataset.h;});
+  // Rings
+  const r1=document.getElementById('ring1');if(r1)r1.style.strokeDashoffset=314*(1-0.38);
+  const r2=document.getElementById('ring2');if(r2)r2.style.strokeDashoffset=251*(1-0.45);
+  const r3=document.getElementById('ring3');if(r3)r3.style.strokeDashoffset=188*(1-0.17);
+},300);
+</script>
+</body>
+</html>

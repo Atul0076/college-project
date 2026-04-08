@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EduCore Pro - User Manual</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background: #f5f5f5;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: white;
+      padding: 40px;
+    }
+
+    .header {
+      text-align: center;
+      border-bottom: 3px solid #14b8a6;
+      padding-bottom: 30px;
+      margin-bottom: 30px;
+    }
+
+    .header h1 {
+      color: #0a0f1e;
+      font-size: 32px;
+      margin-bottom: 10px;
+    }
+
+    .header-meta {
+      color: #666;
+      font-size: 14px;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    h2 {
+      color: #14b8a6;
+      font-size: 22px;
+      margin-top: 30px;
+      margin-bottom: 15px;
+      border-left: 4px solid #14b8a6;
+      padding-left: 15px;
+    }
+
+    h3 {
+      color: #0a0f1e;
+      font-size: 16px;
+      margin-top: 20px;
+      margin-bottom: 10px;
+    }
+
+    p {
+      margin-bottom: 15px;
+      text-align: justify;
+    }
+
+    ul, ol {
+      margin-left: 25px;
+      margin-bottom: 15px;
+    }
+
+    li {
+      margin-bottom: 8px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 15px 0;
+      background: white;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    table thead {
+      background: #14b8a6;
+      color: white;
+    }
+
+    table th, table td {
+      padding: 12px;
+      text-align: left;
+      border: 1px solid #ddd;
+    }
+
+    table tr:nth-child(even) {
+      background: #f9f9f9;
+    }
+
+    table tr:hover {
+      background: #f0f0f0;
+    }
+
+    .toc {
+      background: #f0f9ff;
+      border: 2px solid #14b8a6;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 20px 0;
+    }
+
+    .toc h2 {
+      margin-top: 0;
+    }
+
+    .toc ol {
+      margin: 0;
+    }
+
+    .toc a {
+      color: #14b8a6;
+      text-decoration: none;
+    }
+
+    .toc a:hover {
+      text-decoration: underline;
+    }
+
+    .info-box {
+      background: #fef3c7;
+      border-left: 4px solid #f59e0b;
+      padding: 15px;
+      margin: 15px 0;
+      border-radius: 4px;
+    }
+
+    .success-box {
+      background: #d1fae5;
+      border-left: 4px solid #14b8a6;
+      padding: 15px;
+      margin: 15px 0;
+      border-radius: 4px;
+    }
+
+    .demo-card {
+      background: #f3f4f6;
+      border: 2px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 15px;
+      margin: 10px 0;
+    }
+
+    .demo-card strong {
+      color: #14b8a6;
+    }
+
+    .feature-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      margin: 15px 0;
+    }
+
+    .feature-item {
+      background: #f9fafb;
+      padding: 12px;
+      border-left: 3px solid #14b8a6;
+    }
+
+    .color-palette {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      margin: 15px 0;
+    }
+
+    .color-item {
+      text-align: center;
+      padding: 15px;
+      border-radius: 8px;
+      color: white;
+      font-weight: bold;
+    }
+
+    .color-navy {
+      background: #0a0f1e;
+    }
+
+    .color-teal {
+      background: #14b8a6;
+    }
+
+    .color-amber {
+      background: #f59e0b;
+    }
+
+    .color-coral {
+      background: #f43f5e;
+    }
+
+    .color-violet {
+      background: #8b5cf6;
+    }
+
+    code {
+      background: #f3f4f6;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-family: 'Courier New', monospace;
+      color: #d946ef;
+    }
+
+    .section {
+      page-break-inside: avoid;
+      margin-bottom: 30px;
+    }
+
+    .footer {
+      margin-top: 50px;
+      padding-top: 20px;
+      border-top: 2px solid #ddd;
+      text-align: center;
+      color: #666;
+      font-size: 12px;
+    }
+
+    .breadcrumb {
+      color: #666;
+      font-size: 12px;
+      margin-bottom: 20px;
+    }
+
+    @media print {
+      body {
+        background: white;
+      }
+
+      .no-print {
+        display: none;
+      }
+
+      .container {
+        max-width: 100%;
+        padding: 20px;
+      }
+
+      h2 {
+        page-break-after: avoid;
+      }
+
+      h3 {
+        page-break-after: avoid;
+      }
+
+      table {
+        page-break-inside: avoid;
+      }
+    }
+
+    .print-button {
+      background: #14b8a6;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      margin-bottom: 20px;
+        transition: background 0.3s ease;
+    }
+
+    .print-button:hover {
+      background: #0d9488;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Print Button -->
+    <div class="no-print" style="text-align: center; margin-bottom: 30px;">
+      <button class="print-button" onclick="window.print()">📄 Print / Save as PDF</button>
+      <p style="font-size: 12px; color: #666; margin-top: 10px;">
+        Click above or use Ctrl+P / Cmd+P, then select "Save as PDF"
+      </p>
+    </div>
+
+    <!-- Header -->
+    <div class="header">
+      <h1>📚 EduCore Pro</h1>
+      <h2 style="border: none; margin: 10px 0; color: #666; font-size: 18px;">User Manual & System Guide</h2>
+      <div class="header-meta">
+        <span><strong>Version:</strong> 1.0</span>
+        <span><strong>Date:</strong> April 8, 2026</span>
+        <span><strong>System:</strong> Educational Management Portal</span>
+      </div>
+    </div>
+
+    <!-- Table of Contents -->
+    <div class="toc section">
+      <h2>Table of Contents</h2>
+      <ol>
+        <li><a href="#section-intro">Introduction</a></li>
+        <li><a href="#section-getting-started">Getting Started</a></li>
+        <li><a href="#section-login">Authentication & Login</a></li>
+        <li><a href="#section-admin">Administrator Portal</a></li>
+        <li><a href="#section-teacher">Teacher Portal</a></li>
+        <li><a href="#section-student">Student Portal</a></li>
+        <li><a href="#section-ui-guide">User Interface Guide</a></li>
+        <li><a href="#section-troubleshooting">Troubleshooting</a></li>
+        <li><a href="#section-faq">FAQ</a></li>
+      </ol>
+    </div>
+
+    <!-- Introduction -->
+    <div class="section" id="section-intro">
+      <h2>1. Introduction</h2>
+      <p><strong>EduCore Pro</strong> is a comprehensive educational management system designed to streamline school operations and enhance communication between administrators, teachers, and students. This platform provides role-based access with specialized dashboards and features tailored for each user type.</p>
+      
+      <h3>🎯 Key Features:</h3>
+      <div class="feature-list">
+        <div class="feature-item">✓ Role-Based Access Control</div>
+        <div class="feature-item">✓ Attendance Tracking</div>
+        <div class="feature-item">✓ Grade Management</div>
+        <div class="feature-item">✓ Class Management</div>
+        <div class="feature-item">✓ Student Directory</div>
+        <div class="feature-item">✓ Notification System</div>
+        <div class="feature-item">✓ Responsive Design</div>
+        <div class="feature-item">✓ Dark Theme Interface</div>
+      </div>
+    </div>
+
+    <!-- Getting Started -->
+    <div class="section" id="section-getting-started">
+      <h2>2. Getting Started</h2>
+      
+      <h3>System Requirements:</h3>
+      <ul>
+        <li>Modern web browser (Chrome, Firefox, Safari, Edge)</li>
+        <li>JavaScript enabled</li>
+        <li>Active internet connection</li>
+        <li>No additional software installation needed</li>
+      </ul>
+
+      <h3>Accessing the System:</h3>
+      <ol>
+        <li>Open your web browser</li>
+        <li>Navigate to the EduCore Pro login page (index.html)</li>
+        <li>Enter your credentials (email and password)</li>
+        <li>You will be automatically directed to your role-specific dashboard</li>
+      </ol>
+    </div>
+
+    <!-- Authentication & Login -->
+    <div class="section" id="section-login">
+      <h2>3. Authentication & Login</h2>
+      
+      <h3>Login Page Features:</h3>
+      <ul>
+        <li><strong>Email Address Field:</strong> Enter your institutional email</li>
+        <li><strong>Password Field:</strong> Enter your secure password</li>
+        <li><strong>Remember Me Option:</strong> Optional; improves convenience</li>
+        <li><strong>Demo Credentials Display:</strong> Shows available test accounts</li>
+      </ul>
+
+      <h3>Demo Accounts Available:</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Role</th>
+            <th>Email</th>
+            <th>Name</th>
+            <th>Password</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td rowspan="10"><strong>Super Admin</strong></td><td><code>admin@educore.com</code></td><td>Dr. Vikram Patel</td><td rowspan="10"><code>admin123</code></td></tr>
+          <tr><td><code>admin1@educore.com</code></td><td>Mrs. Sunita Sharma</td></tr>
+          <tr><td><code>admin2@educore.com</code></td><td>Mr. Arjun Verma</td></tr>
+          <tr><td><code>admin3@educore.com</code></td><td>Dr. Nisha Kumar</td></tr>
+          <tr><td><code>admin4@educore.com</code></td><td>Mr. Ramesh Singh</td></tr>
+          <tr><td><code>admin5@educore.com</code></td><td>Ms. Priya Menon</td></tr>
+          <tr><td><code>admin6@educore.com</code></td><td>Dr. Suresh Gupta</td></tr>
+          <tr><td><code>admin7@educore.com</code></td><td>Mrs. Anjali Desai</td></tr>
+          <tr><td><code>admin8@educore.com</code></td><td>Mr. Sameer Khan</td></tr>
+          <tr><td><code>admin9@educore.com</code></td><td>Ms. Divya Iyer</td></tr>
+          
+          <tr><td rowspan="10"><strong>Teacher</strong></td><td><code>teacher1@school.edu</code></td><td>Mr. Rajesh Gupta (English)</td><td rowspan="10"><code>teacher123</code></td></tr>
+          <tr><td><code>arun.k@school.edu</code></td><td>Dr. Arun Kumar (Mathematics)</td></tr>
+          <tr><td><code>rohini.m@school.edu</code></td><td>Ms. Rohini Menon (Science)</td></tr>
+          <tr><td><code>devendra.s@school.edu</code></td><td>Mr. Devendra Saha (Literature)</td></tr>
+          <tr><td><code>jyoti.i@school.edu</code></td><td>Mrs. Jyoti Iyer (History)</td></tr>
+          <tr><td><code>bhupesh.j@school.edu</code></td><td>Mr. Bhupesh Jain (Computer Science)</td></tr>
+          <tr><td><code>oindrila.b@school.edu</code></td><td>Ms. Oindrila Bhat (Arts)</td></tr>
+          <tr><td><code>teacher2@school.edu</code></td><td>Mr. Sanjay Tripathi (Physics)</td></tr>
+          <tr><td><code>teacher3@school.edu</code></td><td>Ms. Meera Nair (Hindi)</td></tr>
+          <tr><td><code>teacher4@school.edu</code></td><td>Mr. Vikram Reddy (Commerce)</td></tr>
+          
+          <tr><td rowspan="10"><strong>Student</strong></td><td><code>aarav.s@school.edu</code></td><td>Aarav Sharma (Grade 10-A)</td><td rowspan="10"><code>student123</code></td></tr>
+          <tr><td><code>ananya.g@school.edu</code></td><td>Ananya Gupta (Grade 11-B)</td></tr>
+          <tr><td><code>arjun.k@school.edu</code></td><td>Arjun Kumar (Grade 9-C)</td></tr>
+          <tr><td><code>anaya.p@school.edu</code></td><td>Anaya Patel (Grade 12-A)</td></tr>
+          <tr><td><code>nikhil.s@school.edu</code></td><td>Nikhil Singh (Grade 10-B)</td></tr>
+          <tr><td><code>priya.d@school.edu</code></td><td>Priya Desai (Grade 11-A)</td></tr>
+          <tr><td><code>jagrit.v@school.edu</code></td><td>Jagrit Verma (Grade 9-A)</td></tr>
+          <tr><td><code>aisha.r@school.edu</code></td><td>Aisha Reddy (Grade 12-B)</td></tr>
+          <tr><td><code>farhan.k@school.edu</code></td><td>Farhan Khan (Grade 10-C)</td></tr>
+          <tr><td><code>zara.m@school.edu</code></td><td>Zara Malhotra (Grade 11-C)</td></tr>
+        </tbody>
+      </table>
+
+      <div class="info-box">
+        <strong>ℹ️ Note:</strong> Demo accounts are for testing purposes and contain sample data.
+      </div>
+
+      <h3>Session Management:</h3>
+      <ul>
+        <li>Sessions are stored locally on your device</li>
+        <li>Use the <strong>Logout</strong> button to end your session</li>
+        <li>After logout, you will be redirected to the login page</li>
+        <li>Always logout on shared computers for security</li>
+      </ul>
+    </div>
+
+    <!-- Administrator Portal -->
+    <div class="section" id="section-admin">
+      <h2>4. Administrator Portal</h2>
+      
+      <h3>Access Information:</h3>
+      <ul>
+        <li><strong>URL:</strong> <code>dashboard.html</code></li>
+        <li><strong>Required Role:</strong> Super Admin</li>
+        <li><strong>Authentication:</strong> Role-based, automatic redirect</li>
+      </ul>
+
+      <h3>Dashboard Overview:</h3>
+      <p>The admin dashboard displays system health metrics including:</p>
+      <ul>
+        <li>Total students enrolled across all classes</li>
+        <li>Total active teachers</li>
+        <li>Current semester classes in progress</li>
+        <li>System statistics and notifications</li>
+      </ul>
+
+      <h3>Main Menu:</h3>
+      <ul>
+        <li><strong>Dashboard:</strong> System overview with KPIs</li>
+        <li><strong>Students:</strong> Complete student directory and profiles</li>
+        <li><strong>Teachers:</strong> Teacher roster and assignments</li>
+        <li><strong>Classes:</strong> Class management and schedules</li>
+        <li><strong>Attendance:</strong> System-wide attendance reports</li>
+        <li><strong>Settings:</strong> System configuration and preferences</li>
+      </ul>
+    </div>
+
+    <!-- Teacher Portal -->
+    <div class="section" id="section-teacher">
+      <h2>5. Teacher Portal</h2>
+      
+      <h3>Access Information:</h3>
+      <ul>
+        <li><strong>URL:</strong> <code>teacher-dashboard.html</code></li>
+        <li><strong>Required Role:</strong> Teacher</li>
+        <li><strong>Authentication:</strong> Role-based, automatic redirect</li>
+      </ul>
+
+      <h3>Dashboard Overview:</h3>
+      <p>Teachers see personalized content including:</p>
+      <ul>
+        <li>Total classes taught</li>
+        <li>Total students across all classes</li>
+        <li>Teaching rating</li>
+        <li>Recent activity and submissions</li>
+      </ul>
+
+      <h3>Main Features:</h3>
+
+      <h4>📚 My Classes</h4>
+      <p>Manage and view all classes you teach with details including:</p>
+      <ul>
+        <li>Class code and name</li>
+        <li>Grade level and room location</li>
+        <li>Schedule (days and times)</li>
+        <li>Enrollment capacity visualization</li>
+        <li>"View Class" and "Edit" action buttons</li>
+      </ul>
+
+      <h4>👥 Students</h4>
+      <p>Searchable student directory featuring:</p>
+      <ul>
+        <li>Real-time search filtering</li>
+        <li>Student information: Name, Grade, Email, GPA, Attendance %</li>
+        <li>Student status (Active/Inactive)</li>
+        <li>Quick view links to individual profiles</li>
+      </ul>
+
+      <h4>📝 Assignments</h4>
+      <p>Track assignment submissions with:</p>
+      <ul>
+        <li>Assignment title and associated class</li>
+        <li>Due date indicators</li>
+        <li>Submission count and progress bars</li>
+        <li>"View Submissions" buttons</li>
+      </ul>
+
+      <h4>✅ Attendance</h4>
+      <p>Record and track student attendance with:</p>
+      <ul>
+        <li>Class selector dropdown</li>
+        <li>Date picker (defaults to today)</li>
+        <li>Student attendance status (Present, Late, Absent)</li>
+        <li>Notes field for additional information</li>
+        <li>Save functionality</li>
+      </ul>
+
+      <div class="success-box">
+        <strong>✓ Tip:</strong> Use the date picker to mark attendance for past dates if needed for makeup records.
+      </div>
+    </div>
+
+    <!-- Student Portal -->
+    <div class="section" id="section-student">
+      <h2>6. Student Portal</h2>
+      
+      <h3>Access Information:</h3>
+      <ul>
+        <li><strong>URL:</strong> <code>student-dashboard.html</code></li>
+        <li><strong>Required Role:</strong> Student</li>
+        <li><strong>Authentication:</strong> Role-based, automatic redirect</li>
+      </ul>
+
+      <h3>Dashboard Overview:</h3>
+      <p>Students see their personalized academic information:</p>
+      <ul>
+        <li>Current attendance rate percentage</li>
+        <li>Active classes list</li>
+        <li>Current Grade Point Average (GPA)</li>
+        <li>Next scheduled class and instructor</li>
+      </ul>
+
+      <h3>Main Features:</h3>
+
+      <h4>📚 My Classes</h4>
+      <p>View all enrolled classes with:</p>
+      <ul>
+        <li>Class name and instructor name</li>
+        <li>Grade level and room location</li>
+        <li>Class schedule (days and times)</li>
+        <li>Enrollment progress bar</li>
+        <li>"View Class" action button</li>
+      </ul>
+
+      <h4>📊 Grades</h4>
+      <p>Track academic performance with three sections:</p>
+      
+      <strong>Current GPA Display:</strong>
+      <ul>
+        <li>Overall GPA shown prominently</li>
+        <li>Color-coded for quick reference</li>
+      </ul>
+
+      <strong>All Assessments Table:</strong>
+      <ul>
+        <li>Complete assignment and test history</li>
+        <li>Grade badges (A, B, C with color coding)</li>
+        <li>Score percentages</li>
+        <li>Assignment dates and instructors</li>
+      </ul>
+
+      <strong>Performance by Subject:</strong>
+      <ul>
+        <li>Subject averages (e.g., "Math Avg: 94%")</li>
+        <li>Visual progress bars per subject</li>
+        <li>Overall performance status</li>
+      </ul>
+
+      <h4>✅ Attendance</h4>
+      <p>Monitor attendance record with:</p>
+      <ul>
+        <li>Overall attendance rate percentage</li>
+        <li>Stat cards: Present count, Absent count, Late count</li>
+        <li>Complete attendance history table</li>
+        <li>Color-coded status (Present, Late, Absent)</li>
+        <li>Attendance breakdown by class</li>
+      </ul>
+
+      <h4>🔔 Notifications</h4>
+      <p>Receive and manage alerts:</p>
+      <ul>
+        <li>Unread notification count display</li>
+        <li>Notification types: Info, Warning, Alert</li>
+        <li>Timestamps for each notification</li>
+        <li>"Mark All Read" functionality</li>
+        <li>Complete notification history</li>
+      </ul>
+
+      <div class="success-box">
+        <strong>✓ Tip:</strong> Check notifications regularly for important announcements and grade postings.
+      </div>
+    </div>
+
+    <!-- UI Guide -->
+    <div class="section" id="section-ui-guide">
+      <h2>7. User Interface Guide</h2>
+
+      <h3>Color Scheme:</h3>
+      <div class="color-palette">
+        <div class="color-item color-navy">Navy #0a0f1e<br><small>Background</small></div>
+        <div class="color-item color-teal">Teal #14b8a6<br><small>Student Portal</small></div>
+        <div class="color-item color-amber">Amber #f59e0b<br><small>Teacher Portal</small></div>
+        <div class="color-item color-coral">Coral #f43f5e<br><small>Alerts</small></div>
+        <div class="color-item color-violet">Violet #8b5cf6<br><small>Secondary</small></div>
+      </div>
+
+      <h3>UI Components:</h3>
+
+      <h4>Buttons:</h4>
+      <ul>
+        <li><strong>Primary Action:</strong> Teal/Amber buttons (role-specific)</li>
+        <li><strong>Hover State:</strong> Brightness increase on hover</li>
+        <li><strong>States:</strong> Enabled, Disabled, Loading</li>
+      </ul>
+
+      <h4>Cards:</h4>
+      <ul>
+        <li>White/light background for contrast</li>
+        <li>Shadow effects for depth</li>
+        <li>Rounded corners for modern appearance</li>
+        <li>Proper padding and spacing</li>
+      </ul>
+
+      <h4>Tables:</h4>
+      <ul>
+        <li>Striped rows for easy reading</li>
+        <li>Clear headers and data organization</li>
+        <li>Responsive layout on different devices</li>
+      </ul>
+
+      <h3>Universal Features:</h3>
+      <ul>
+        <li><strong>User Profile:</strong> Top-right corner shows name, role, logout</li>
+        <li><strong>Navigation Sidebar:</strong> Role-specific menu with active page highlighting</li>
+        <li><strong>Responsive Design:</strong> Works on desktop, tablet, and mobile</li>
+        <li><strong>Dark Theme:</strong> Easy on eyes, professional appearance</li>
+      </ul>
+    </div>
+
+    <!-- Troubleshooting -->
+    <div class="section" id="section-troubleshooting">
+      <h2>8. Troubleshooting</h2>
+
+      <h3>Common Issues and Solutions:</h3>
+
+      <h4>❌ Login Problems</h4>
+
+      <strong>Issue: "Cannot log in, page redirects to login"</strong>
+      <ul>
+        <li>Clear browser cookies and cache, try again</li>
+        <li>Verify correct email format (e.g., student@school.edu)</li>
+        <li>Confirm password is correct (case-sensitive)</li>
+      </ul>
+
+      <strong>Issue: "Wrong credentials message"</strong>
+      <ul>
+        <li>Ensure email matches exactly (check for spaces)</li>
+        <li>Use demo credentials for testing</li>
+        <li>Contact admin if credentials are incorrect</li>
+      </ul>
+
+      <h4>❌ Page Display Issues</h4>
+
+      <strong>Issue: "Sidebar not showing or styling looks wrong"</strong>
+      <ul>
+        <li>Refresh the page (Ctrl+F5 or Cmd+Shift+R)</li>
+        <li>Clear browser cache and reload</li>
+        <li>Try a different browser</li>
+      </ul>
+
+      <strong>Issue: "Data not loading or showing outdated information"</strong>
+      <ul>
+        <li>Perform a hard refresh of the page</li>
+        <li>Clear browser localStorage</li>
+        <li>Log out and log back in</li>
+      </ul>
+
+      <h3>Browser Compatibility:</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Browser</th>
+            <th>Version</th>
+            <th>Support</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Chrome</td>
+            <td>Latest</td>
+            <td>✓ Fully Supported</td>
+          </tr>
+          <tr>
+            <td>Firefox</td>
+            <td>Latest</td>
+            <td>✓ Fully Supported</td>
+          </tr>
+          <tr>
+            <td>Safari</td>
+            <td>Latest</td>
+            <td>✓ Fully Supported</td>
+          </tr>
+          <tr>
+            <td>Edge</td>
+            <td>Latest</td>
+            <td>✓ Fully Supported</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Clearing Browser Storage:</h3>
+      <ol>
+        <li>Open browser Developer Tools (F12)</li>
+        <li>Go to Application/Storage tab</li>
+        <li>Find "localStorage"</li>
+        <li>Remove entries: edu_auth, edu_students</li>
+        <li>Refresh the page</li>
+      </ol>
+    </div>
+
+    <!-- FAQ -->
+    <div class="section" id="section-faq">
+      <h2>9. Frequently Asked Questions (FAQ)</h2>
+
+      <h3>Q: Is my data saved permanently?</h3>
+      <p><strong>A:</strong> Data is stored in your browser's local storage. Clearing browser data will remove it. In production, data would be stored in a secure database.</p>
+
+      <h3>Q: Can I access from multiple devices?</h3>
+      <p><strong>A:</strong> Currently, each device has separate storage. Future versions will include cloud synchronization.</p>
+
+      <h3>Q: What if I forget my password?</h3>
+      <p><strong>A:</strong> Use demo credentials for testing, or contact your system administrator.</p>
+
+      <h3>Q: Can students edit their own grades?</h3>
+      <p><strong>A:</strong> No, only teachers and admins can modify grades. Student view is read-only for security.</p>
+
+      <h3>Q: How often is attendance recorded?</h3>
+      <p><strong>A:</strong> Teachers record attendance for each class session. Records are timestamped automatically.</p>
+
+      <h3>Q: Can I print reports?</h3>
+      <p><strong>A:</strong> Yes, use your browser's print function (Ctrl+P or Cmd+P) to print any page as PDF.</p>
+
+      <h3>Q: Is the system secure?</h3>
+      <p><strong>A:</strong> This is a demo system with local storage. Production version includes SSL encryption, secure authentication, and database security.</p>
+
+      <h3>Q: What browser should I use?</h3>
+      <p><strong>A:</strong> Any modern browser works - Chrome, Firefox, Safari, or Edge. Internet Explorer is not supported.</p>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <p>
+        <strong>EduCore Pro v1.0</strong> © 2026 EduCore Systems<br>
+        Educational Management System | User Manual<br><br>
+        <em>For support, contact: admin@educore.com</em>
+      </p>
+      <p style="margin-top: 15px;">
+        <strong>Document Information:</strong><br>
+        Version 1.0 | Last Updated: April 8, 2026 | Total Pages: Refer to print preview
+      </p>
+    </div>
+  </div>
+
+  <!-- Print Helper Script -->
+  <script>
+    // Optional: Add print-friendly styles
+    window.addEventListener('beforeprint', function() {
+      document.body.style.background = 'white';
+    });
+  </script>
+</body>
+</html>
