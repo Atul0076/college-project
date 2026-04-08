@@ -24,7 +24,8 @@
 <style>
   * { font-family: 'DM Sans', sans-serif; }
   .display { font-family: 'Fraunces', serif; }
-  body { background: #0a0f1e; overflow: hidden; }
+  body { background: #0a0f1e; overflow-y: auto; }
+  @media (max-width: 1024px) { body { overflow-y: auto; } }
   .mesh { position:fixed;inset:0;background:radial-gradient(ellipse at 20% 50%, rgba(45,212,191,0.08) 0%, transparent 60%),radial-gradient(ellipse at 80% 20%, rgba(251,191,36,0.06) 0%, transparent 50%),radial-gradient(ellipse at 60% 80%, rgba(244,63,94,0.05) 0%, transparent 50%); pointer-events:none; }
   .grid-bg { position:fixed;inset:0;background-image:linear-gradient(rgba(45,212,191,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(45,212,191,0.04) 1px,transparent 1px);background-size:48px 48px; pointer-events:none; }
   .card-glow { box-shadow:0 0 0 1px rgba(45,212,191,0.15),0 24px 64px rgba(0,0,0,0.6),0 0 80px rgba(45,212,191,0.06); }
@@ -41,6 +42,10 @@
   @keyframes pulse { 0%,100%{opacity:.4} 50%{opacity:.8} }
   .err-shake { animation:shake .4s ease; }
   @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-8px)} 75%{transform:translateX(8px)} }
+  @media (max-width: 768px) {
+    .left-panel { display: none; }
+    body { padding-top: 0; }
+  }
 </style>
 </head>
 <body class="min-h-screen flex items-center justify-center">
@@ -52,11 +57,11 @@
 <div class="orb w-48 h-48 bg-amber-400/10 bottom-20 right-20 fixed" style="animation-delay:2s"></div>
 <div class="orb w-32 h-32 bg-coral-500/15 top-1/2 right-10 fixed" style="animation-delay:1s"></div>
 
-<div class="relative z-10 w-full max-w-5xl mx-auto px-4 flex items-center min-h-screen py-8">
+<div class="relative z-10 w-full max-w-5xl mx-auto px-4 flex items-center py-8" style="min-height: auto;">
   <div class="w-full grid grid-cols-1 lg:grid-cols-2 gap-0 rounded-2xl overflow-hidden card-glow">
 
     <!-- Left Panel -->
-    <div class="bg-navy-800/90 backdrop-blur-xl p-10 lg:p-14 flex flex-col justify-between relative overflow-hidden">
+    <div class="left-panel bg-navy-800/90 backdrop-blur-xl p-10 lg:p-14 flex flex-col justify-between relative overflow-hidden">
       <div class="absolute inset-0 bg-gradient-to-br from-teal-500/8 to-transparent pointer-events-none"></div>
       <!-- Logo -->
       <div class="slide-up">
@@ -107,10 +112,10 @@
     </div>
 
     <!-- Right Panel — Login Form -->
-    <div class="bg-navy-900/95 backdrop-blur-xl p-10 lg:p-14 flex flex-col justify-center">
+    <div class="bg-navy-900/95 backdrop-blur-xl p-6 sm:p-10 lg:p-14 flex flex-col justify-center min-h-auto sm:min-h-screen">
       <div class="slide-up" style="animation-delay:.1s">
-        <h2 class="display text-3xl font-black text-white mb-2">Welcome back</h2>
-        <p class="text-slate-500 text-sm mb-8">Sign in to your admin panel</p>
+        <h2 class="display text-2xl sm:text-3xl font-black text-white mb-2">Welcome back</h2>
+        <p class="text-slate-500 text-xs sm:text-sm mb-6 sm:mb-8">Sign in to your admin panel</p>
 
 
 
@@ -118,45 +123,45 @@
           <p class="text-coral-400 text-sm">❌ Invalid credentials. Please try again.</p>
         </div>
 
-        <form id="loginForm" class="space-y-5">
+        <form id="loginForm" class="space-y-4 sm:space-y-5">
           <div>
             <label class="block text-slate-400 text-xs font-semibold uppercase tracking-wider mb-2">Email Address</label>
-            <input type="email" id="email" value="admin@educore.com" class="input-field w-full px-4 py-3 rounded-xl text-sm" placeholder="admin@educore.com"/>
+            <input type="email" id="email" value="admin@educore.com" class="input-field w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl text-xs sm:text-sm" placeholder="admin@educore.com"/>
           </div>
           <div>
             <label class="block text-slate-400 text-xs font-semibold uppercase tracking-wider mb-2">Password</label>
             <div class="relative">
-              <input type="password" id="password" value="admin123" class="input-field w-full px-4 py-3 rounded-xl text-sm pr-12" placeholder="••••••••"/>
-              <button type="button" onclick="togglePw()" class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 hover:text-teal-400 transition-colors">
+              <input type="password" id="password" value="admin123" class="input-field w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl text-xs sm:text-sm pr-10 sm:pr-12" placeholder="••••••••"/>
+              <button type="button" onclick="togglePw()" class="absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 text-slate-500 hover:text-teal-400 transition-colors">
                 <svg id="eyeIcon" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
               </button>
             </div>
           </div>
 
-          <div class="flex items-center justify-between">
-            <label class="flex items-center gap-2 cursor-pointer">
+          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-0">
+            <label class="flex items-center gap-2 cursor-pointer order-2 sm:order-1">
               <input type="checkbox" id="remember" class="w-4 h-4 rounded accent-teal-500"/>
-              <span class="text-slate-400 text-sm">Remember me</span>
+              <span class="text-slate-400 text-xs sm:text-sm">Remember me</span>
             </label>
-            <a href="#" class="text-teal-400 text-sm hover:text-teal-300 transition-colors">Forgot password?</a>
+            <a href="#" class="text-teal-400 text-xs sm:text-sm hover:text-teal-300 transition-colors order-1 sm:order-2">Forgot password?</a>
           </div>
 
-          <button type="submit" class="btn-primary w-full py-3.5 rounded-xl text-white font-semibold text-sm tracking-wide">
+          <button type="submit" class="btn-primary w-full py-3 sm:py-3.5 rounded-xl text-white font-semibold text-xs sm:text-sm tracking-wide mt-2 sm:mt-0">
             <span id="btnText">Sign In to Dashboard</span>
           </button>
         </form>
 
         <!-- Role selector -->
-        <div class="mt-6">
-          <p class="text-slate-500 text-xs text-center mb-3">Sign in as</p>
-          <div class="grid grid-cols-3 gap-2">
-            <button onclick="setRole('Admin')" class="px-3 py-2 rounded-lg border border-teal-500/40 text-teal-400 text-xs hover:bg-teal-500/10 transition-all">Admin</button>
-            <button onclick="setRole('Teacher')" class="px-3 py-2 rounded-lg border border-white/10 text-slate-400 text-xs hover:border-amber-400/40 hover:text-amber-400 transition-all">Teacher</button>
-            <button onclick="setRole('Student')" class="px-3 py-2 rounded-lg border border-white/10 text-slate-400 text-xs hover:border-coral-400/40 hover:text-coral-400 transition-all">Student</button>
+        <div class="mt-4 sm:mt-6">
+          <p class="text-slate-500 text-xs text-center mb-2 sm:mb-3">Sign in as</p>
+          <div class="grid grid-cols-3 gap-1.5 sm:gap-2">
+            <button onclick="setRole('Admin')" class="px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg border border-teal-500/40 text-teal-400 text-xs hover:bg-teal-500/10 transition-all">Admin</button>
+            <button onclick="setRole('Teacher')" class="px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg border border-white/10 text-slate-400 text-xs hover:border-amber-400/40 hover:text-amber-400 transition-all">Teacher</button>
+            <button onclick="setRole('Student')" class="px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg border border-white/10 text-slate-400 text-xs hover:border-coral-400/40 hover:text-coral-400 transition-all">Student</button>
           </div>
         </div>
 
-        <p class="text-center text-slate-600 text-xs mt-8">© 2024 EduCore Pro. Secure Admin Portal.</p>
+        <p class="text-center text-slate-600 text-xs mt-6 sm:mt-8">© 2024 EduCore Pro. Secure Admin Portal.</p>
       </div>
     </div>
 
