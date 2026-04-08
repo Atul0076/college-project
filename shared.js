@@ -96,6 +96,16 @@ function getNotifications() {
   ];
 }
 
+// ── Global Toggle Function ───────────────────────────────────────────────────
+function toggleSidebar(){
+  const s=document.getElementById('sidebar');
+  const o=document.getElementById('sidebarOverlay');
+  if(s && o){
+    s.classList.toggle('-translate-x-full');
+    o.classList.toggle('hidden');
+  }
+}
+
 // ── Sidebar HTML ────────────────────────────────────────────────────────────
 function renderSidebar(activePage) {
   const user = authGuard();
@@ -113,7 +123,7 @@ function renderSidebar(activePage) {
 
   return `
   <!-- Mobile overlay -->
-  <div id="sidebarOverlay" class="fixed inset-0 bg-black/60 z-30 hidden lg:hidden" onclick="toggleSidebar()"></div>
+  <div id="sidebarOverlay" class="fixed inset-0 bg-black/60 z-30 hidden lg:hidden pointer-events-auto" onclick="toggleSidebar()"></div>
 
   <!-- Sidebar -->
   <aside id="sidebar" class="fixed left-0 top-0 h-full w-64 bg-navy-900 border-r border-white/5 z-40 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 flex flex-col">
@@ -162,15 +172,6 @@ function renderSidebar(activePage) {
       </button>
     </div>
   </aside>
-
-  <script>
-  function toggleSidebar(){
-    const s=document.getElementById('sidebar');
-    const o=document.getElementById('sidebarOverlay');
-    s.classList.toggle('-translate-x-full');
-    o.classList.toggle('hidden');
-  }
-  <\/script>
   `;
 }
 
@@ -179,8 +180,8 @@ function renderTopbar(title, subtitle) {
   const notifs = getNotifications();
   const unread = notifs.filter(n=>!n.read).length;
   return `
-  <header class="h-16 bg-navy-900/80 backdrop-blur-xl border-b border-white/5 flex items-center px-6 gap-4 sticky top-0 z-20">
-    <button onclick="toggleSidebar()" class="lg:hidden text-slate-400 hover:text-white transition-colors">
+  <header class="h-16 bg-navy-900/80 backdrop-blur-xl border-b border-white/5 flex items-center px-4 sm:px-6 gap-4 sticky top-0 z-20">
+    <button type="button" onclick="toggleSidebar()" class="lg:hidden text-slate-400 hover:text-white transition-colors p-2 -m-2 pointer-events-auto">
       <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
     </button>
     <div class="flex-1">
