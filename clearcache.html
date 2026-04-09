@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Clear Cache & Reload</title>
+<style>
+  body { font-family: Arial, sans-serif; background: #0a0f1e; color: white; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; }
+  .container { text-align: center; padding: 2rem; background: #0d1529; border-radius: 1rem; border: 1px solid rgba(45, 212, 191, 0.15); }
+  h1 { color: #2dd4bf; margin-bottom: 1rem; }
+  p { margin: 0.5rem 0; font-size: 1.1rem; }
+  button { background: linear-gradient(135deg, #14b8a6, #0d9488); color: white; border: none; padding: 1rem 2rem; border-radius: 0.75rem; font-size: 1rem; cursor: pointer; margin-top: 1rem; }
+  button:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(20, 184, 166, 0.35); }
+  .success { color: #2dd4bf; margin-top: 1rem; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>🔄 Cache Refresh</h1>
+  <p id="status">Clearing localStorage cache...</p>
+  <button onclick="location.href='students.html'">Go to Students Page</button>
+</div>
+
+<script>
+// Clear all localStorage
+localStorage.clear();
+
+// Clear all sessionStorage
+sessionStorage.clear();
+
+// Set message
+document.getElementById('status').innerHTML = '<p class="success">✓ Cache cleared!</p><p style="margin-top: 1rem;">All old data removed. Fresh data will load.</p>';
+
+// Auto redirect after 2 seconds
+setTimeout(() => {
+  window.location.href = 'students.html';
+}, 2000);
+</script>
+</body>
+</html>

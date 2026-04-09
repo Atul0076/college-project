@@ -87,6 +87,27 @@ function saveStudents(data) { localStorage.setItem('edu_students', JSON.stringif
 function getTeachers() { return JSON.parse(localStorage.getItem('edu_teachers') || JSON.stringify(DEFAULT_TEACHERS)); }
 function getClasses() { return JSON.parse(localStorage.getItem('edu_classes') || JSON.stringify(DEFAULT_CLASSES)); }
 function getAttendance() { return JSON.parse(localStorage.getItem('edu_attendance') || JSON.stringify(DEFAULT_ATTENDANCE)); }
+
+// ── Load data from accounts.json ────────────────────────────────────────────
+async function loadAccountsData() {
+  try {
+    const response = await fetch('accounts.json?t=' + Date.now());
+    const data = await response.json();
+    if (data.students && data.students.length > 0) {
+      // Ensure all students have IDs
+      data.students.forEach((s, idx) => {
+        if (!s.id) s.id = idx + 1;
+      });
+      localStorage.setItem('edu_students', JSON.stringify(data.students));
+      localStorage.setItem('edu_teachers', JSON.stringify(data.teachers || DEFAULT_TEACHERS));
+      localStorage.setItem('edu_admins', JSON.stringify(data.admins || DEMO_ADMINS));
+    }
+  } catch (e) {
+    console.warn('Could not load accounts.json, using defaults:', e);
+  }
+}
+
+loadAccountsData();
 function getNotifications() {
   return [
     { id:1, text:'New student enrollment: Mohit Verma', time:'2 min ago', type:'info', read:false },
