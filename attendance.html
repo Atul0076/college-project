@@ -100,6 +100,9 @@ body{background:#0a0f1e;color:#fff}
 </div>
 
 <script>
+// Auth check - ensure logged-in user is admin/teacher
+authGuard();
+
 document.getElementById('sidebarMount').innerHTML=renderSidebar('attendance');
 document.getElementById('topbarMount').innerHTML=renderTopbar('Attendance','Track daily student presence');
 
@@ -124,11 +127,11 @@ document.getElementById('attRate').textContent=Math.round(students.reduce((a,s)=
 // Render table
 const avatarColors=['bg-teal-500/20 text-teal-400','bg-amber-400/20 text-amber-400','bg-violet-400/20 text-violet-400','bg-coral-400/20 text-coral-400'];
 const tbody=document.getElementById('attTable');
-students.forEach(s=>{
+const tableHTML=students.map(s=>{
   attState[s.id]='none';
   const pct=s.attendance;
   const bar=`<div class="w-16 h-1.5 bg-navy-700 rounded-full overflow-hidden inline-block align-middle mr-1.5"><div class="h-full rounded-full ${pct>=90?'bg-teal-500':pct>=75?'bg-amber-400':'bg-coral-400'}" style="width:${pct}%"></div></div>`;
-  tbody.innerHTML+=`
+  return `
   <tr class="border-b border-white/5 hover:bg-white/2 transition-colors">
     <td class="py-3 px-4">
       <div class="flex items-center gap-3">
@@ -146,7 +149,8 @@ students.forEach(s=>{
       </div>
     </td>
   </tr>`;
-});
+}).join('');
+tbody.innerHTML=tableHTML;
 
 function setAtt(id,val){
   attState[id]=attState[id]===val?'none':val;
@@ -171,9 +175,9 @@ function saveAttendance(){
 
 // History
 const hist=document.getElementById('histTable');
-attendance.forEach(a=>{
+const histHTML=attendance.map(a=>{
   const rate=Math.round(a.present/a.total*100);
-  hist.innerHTML+=`
+  return `
   <tr class="border-b border-white/5 hover:bg-white/2 transition-colors">
     <td class="py-3 px-4 text-slate-300 text-sm">${a.date}</td>
     <td class="py-3 px-4 text-slate-300 text-sm">${a.class}</td>
@@ -187,7 +191,8 @@ attendance.forEach(a=>{
       </div>
     </td>
   </tr>`;
-});
+}).join('');
+hist.innerHTML=histHTML;
 
 // Alerts
 const alerts=document.getElementById('alertsList');
@@ -195,21 +200,26 @@ const low=students.filter(s=>s.attendance<80).sort((a,b)=>a.attendance-b.attenda
 if(low.length===0){
   alerts.innerHTML='<p class="text-teal-400 text-sm">✓ All students above 80% attendance threshold</p>';
 }else{
-  low.forEach(s=>{
-    alerts.innerHTML+=`
-    <div class="flex items-center gap-4 p-4 rounded-xl border ${s.attendance<70?'border-coral-400/20 bg-coral-400/5':'border-amber-400/20 bg-amber-400/5'}">
+  const alertsHTML=low.map(s=>{
+    const isCritical=s.attendance<70;
+    const borderClass=isCritical?'border-coral-400/20 bg-coral-400/5':'border-amber-400/20 bg-amber-400/5';
+    const textColor=isCritical?'#fb7185':'#fbbf24';
+    const btnBorder=isCritical?'border-coral-400/30 text-coral-400':'border-amber-400/30 text-amber-400';
+    return `
+    <div class="flex items-center gap-4 p-4 rounded-xl border ${borderClass}">
       <div class="w-9 h-9 rounded-xl ${avatarColors[s.id%4]} flex items-center justify-center text-xs font-bold flex-shrink-0">${s.avatar}</div>
       <div class="flex-1">
         <div class="text-white text-sm font-medium">${s.name}</div>
         <div class="text-slate-500 text-xs">${s.grade} · ${s.email}</div>
       </div>
       <div class="text-right">
-        <div class="text-${s.attendance<70?'coral':'amber'}-400 font-bold text-lg">${s.attendance}%</div>
-        <div class="text-slate-500 text-xs">${s.attendance<70?'Critical':'Warning'}</div>
+        <div class="font-bold text-lg" style="color:${textColor}">${s.attendance}%</div>
+        <div class="text-slate-500 text-xs">${isCritical?'Critical':'Warning'}</div>
       </div>
-      <button class="px-3 py-1.5 rounded-lg border ${s.attendance<70?'border-coral-400/30 text-coral-400':'border-amber-400/30 text-amber-400'} text-xs hover:bg-white/5 transition-all">Notify</button>
+      <button class="px-3 py-1.5 rounded-lg border ${btnBorder} text-xs hover:bg-white/5 transition-all">Notify</button>
     </div>`;
-  });
+  }).join('');
+  alerts.innerHTML=alertsHTML;
 }
 </script>
 </body>

@@ -43,13 +43,13 @@
   .err-shake { animation:shake .4s ease; }
   @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-8px)} 75%{transform:translateX(8px)} }
   @media (max-width: 1024px) {
-    .left-panel { padding: 1.5rem 1rem; justify-content: flex-start; min-h-auto; }
+    .left-panel { padding: 1.5rem 1rem; justify-content: flex-start; min-height: auto; }
     .left-panel .slide-up:last-child { display: none; }
     .left-panel .stats-row { display: none; }
     .left-panel .features { display: none; }
   }
   @media (max-width: 768px) {
-    .left-panel { padding: 1rem; border-radius: 1.5rem 1.5rem 0 0; justify-content: flex-start; min-h-auto; }
+    .left-panel { padding: 1rem; border-radius: 1.5rem 1.5rem 0 0; justify-content: flex-start; min-height: auto; }
     .left-panel .slide-up:last-child { display: none; }
     .left-panel .stats-row { display: none; }
     .left-panel .features { display: none; }
